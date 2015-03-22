@@ -1,0 +1,65 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+applicationName = 'InsightDataEngineeringCodingChallenge'
+mainClassName = 'lamblin.wordcount.WordCountCmd'
+sourceCompatibility = 1.8
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile group: 'com.google.guava', name: 'guava', version: '18.0'
+    compile 'com.beust:jcommander:1.29'
+    compile 'com.squareup.dagger:dagger:1.2.2'
+    compile 'com.squareup.dagger:dagger-compiler:1.2.2'
+}
+
+jar {
+    manifest {
+        attributes("Implementation-Title": "InsightDataEngineeringCodingChallenge",
+                   "Implementation-Version": version)
+    }
+}
+
+// Initial start script's main class points to word count.
+startScripts {
+    applicationName = "wordCount"
+}
+
+// Way to execute word count with arguments from a property defined on gradle commandline.
+task(runWordCount, dependsOn: 'classes', type: JavaExec) {
+    main = mainClassName
+    classpath = sourceSets.main.runtimeClasspath
+    if (project.hasProperty('myargs')) {
+        args(myargs.split(','))
+    }
+}
+
+// The remainder is a way to deploy
+task additionalStartScripts() << {
+    // just a placeholder
+}
+
+def scripts = [
+    'runningMedianWordsPerLine':'lamblin.medianwordsperline.RunningMedianWordsPerLineCmd'
+    ]
+
+scripts.each() { scriptName, className ->
+
+    def t = tasks.create(name: scriptName+'StartScript', type: CreateStartScripts) {
+        mainClassName = className
+        applicationName = scriptName
+        outputDir = new File(project.buildDir, 'scripts')
+        classpath = jar.outputs.files + project.configurations.runtime
+    }
+
+    applicationDistribution.into("bin") {
+        from(t)
+        fileMode = 0755
+    }
+    additionalStartScripts.dependsOn(t)
+}
