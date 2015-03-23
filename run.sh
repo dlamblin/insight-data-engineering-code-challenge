@@ -14,7 +14,8 @@ usage() {
 \thelp\tprints this help.
 \tgetxts\tfetches gutenberg books for ${dir_in}.
 \tjava\truns word count and running median in java.
-\tperl\truns word count and running median in perl.     [not-yet-implemented]
+\tperl\truns word count and running median in perl.
+\toneliner\truns word count and running median in perl oneliners.
 \tpython\truns word count and running median in python. [not-yet-implemented]
 \tgo\truns word count and running median in go.         [not-yet-implemented]
 
@@ -33,7 +34,7 @@ makedirs() {
 
 main() {
     # Variables and configuration
-    local usage_line="Usage: $0 {help|getxtsjava|perl|python|go|clean}\n"
+    local usage_line="Usage: $0 {help|getxtsjava|oneliner|perl|python|go|clean}\n"
     local command="${1:-java}"
 
     local dir_in='wc_input'
@@ -43,7 +44,13 @@ main() {
     local java_project_name='InsightDataEngineeringCodingChallenge'
     local java_bin_path="./build/install/${java_project_name}/bin"
     local java_wc_cmd="${java_bin_path}/wordCount"
-    local java_med_cmd="${java_bin_path}/runningMedianWordsPerLine"
+    local java_md_cmd="${java_bin_path}/runningMedianWordsPerLine"
+
+    local perl_wc_cmd="./src/main/perl/wordCount.pl"
+    local perl_md_cmd="./src/main/perl/runinngMedianWordsPerLine.pl"
+
+    local line_wc_cmd="./non-scalable_10min_oneliner1.pl"
+    local line_md_cmd="./non-scalable_10min_oneliner2.pl"
 
     #Start processing
     case ${command} in
@@ -104,31 +111,50 @@ main() {
             ;;
     esac
 
-    echo "You chose ${command}: from java, perl, python, go" \
+    echo "You chose ${command}: from java, oneliner, perl, python, go" \
          "(and getxts, clean, or help)." >&2
 
     case ${command} in
         java)
             makedirs "${dir_in}" "${dir_out}"
-            echo "Good choice" >&2
-            if [[ ! -x ${java_wc_cmd} || ! -x ${java_med_cmd} ]]; then
-                echo "Installing: ${java_wc_cmd} and ${java_med_cmd}" >&2
+            echo "Good choice; see all the source in src/{main,test}/java/lamblin" >&2
+            if [[ ! -x ${java_wc_cmd} || ! -x ${java_md_cmd} ]]; then
+                echo "Installing: ${java_wc_cmd} and ${java_md_cmd}" >&2
                 ${gradle_cmd} installApp
             fi
+            echo "Running word count." >&2
             ${java_wc_cmd} -i "${dir_in}" -o "${dir_out}/wc_result.txt"
-            ${java_med_cmd} -i "${dir_in}" -o "${dir_out}/med_result.txt"
+            echo "Running median word count per line." >&2
+            ${java_md_cmd} -i "${dir_in}" -o "${dir_out}/med_result.txt"
+            ;;
+        oneliner)
+            makedirs "${dir_in}" "${dir_out}"
+            echo "See also the slightly better \"perl\"; and this source in ./*.pl" >&2
+            local perl_cmd=$(which perl)
+            if [[ $? -ne 0 ]]; then
+                echo "Actually, it seems you might not have perl installed." >&2
+            else
+                echo "Running word count." >&2
+                ${perl_cmd} ${line_wc_cmd} "${dir_in}"/* > "${dir_out}/wc_result.txt"
+                echo "Running median word count per line. (This is naively slow)" >&2
+                ${perl_cmd} ${line_md_cmd} "${dir_in}"/* > "${dir_out}/med_result.txt"
+            fi
             ;;
         perl)
             makedirs "${dir_in}" "${dir_out}"
-            echo "Not yet implemented" >&2
+            echo "See also the \"oneliner\" perl; and this source in src/main/perl" >&2
+            echo "Running word count." >&2
+            ${perl_wc_cmd} "${dir_in}"/* > "${dir_out}/wc_result.txt"
+            echo "Running median word count per line." >&2
+            ${perl_md_cmd} "${dir_in}"/* > "${dir_out}/med_result.txt"
             ;;
         python)
             makedirs "${dir_in}" "${dir_out}"
-            echo "Not yet implemented" >&2
+            echo "Not yet implemented; aw. I had under a week and java is so verbose" >&2
             ;;
         go)
             makedirs "${dir_in}" "${dir_out}"
-            echo "Not yet implemented" >&2
+            echo "Not yet implementedaw. I had under a week but I'm definitely working on it" >&2
             ;;
         clean)
             echo "Clean isn't a language, but I am going to" \
@@ -137,7 +163,7 @@ main() {
             rm "${dir_in}/"pg*txt
             ;;
         *)
-            echo "That doesn't actually make sense to run.sh." >&2
+            echo "That \"{$command}\" doesn't actually make sense to run.sh." >&2
             echo -e ${usage_line}
             exit 1
     esac
