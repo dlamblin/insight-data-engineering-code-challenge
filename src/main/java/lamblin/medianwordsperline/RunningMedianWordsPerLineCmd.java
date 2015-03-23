@@ -42,7 +42,7 @@ public class RunningMedianWordsPerLineCmd {
 
   private void countWordsPerLine() {
     for (String line : lineSource) {
-      output.printf("%.2f\n", runningMedian.update(line));
+      output.printf("%.1f\n", runningMedian.update(line));
     }
     output.close();
   }

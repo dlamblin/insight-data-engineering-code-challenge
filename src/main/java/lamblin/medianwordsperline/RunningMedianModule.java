@@ -83,7 +83,11 @@ public class RunningMedianModule {
   /**
    * Provides a {@link RunningMedian} of word counts of each added line.
    */
-  RunningMedian<String> provideRunningMedian(WordCountTransformer wordCountTransformer) {
-    return new TransformingRunningMedian<>(wordCountTransformer, new QueueRunningMedian<Integer>());
+  RunningMedian<String> provideQueueRunningMedian(Arguments arguments,
+                                                  WordCountTransformer wordCountTransformer) {
+    return new TransformingRunningMedian<>(
+        wordCountTransformer, (arguments.unconstrained)
+                              ? new QueueRunningMedian<Integer>()
+                              : RangeRunningMedian.newIntRangeRunningMedian(0, 50, 1));
   }
 }

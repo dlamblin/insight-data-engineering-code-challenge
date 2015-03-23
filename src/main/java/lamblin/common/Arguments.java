@@ -31,4 +31,9 @@ public class Arguments {
       names = {"-s", "--stopwords"},
       description = "Stop-words file path containing words to be ignored")
   public String stopwords;
+
+  @Parameter(
+      names = {"-u", "--unconstrained"},
+      description = "Swaps out the range limited median for the MinMax queue median method")
+  public boolean unconstrained;
 }
