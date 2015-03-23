@@ -19,77 +19,17 @@ import java.util.HashMap;
  * similarly that the number of any one integer value inputs should be less as well. Also the number
  * of buckets should be less than integer's maximum value.
  * <p/>
- * TODO(lamblin): The ugly static constructors and abstract methods are all due to bad generics.
- * TODO(lamblin): It could be removed if one class using Longs were extended by one using Integers.
  * Created by dlamblin on 3/23/15.
  *
  * @author Daniel Lamblin
  */
- abstract class RangeRunningMedian<T extends Number & Comparable<T>> implements RunningMedian<T> {
+ public class RangeRunningMedian<T extends Number & Comparable<T>> implements RunningMedian<T> {
 
   private final HashMap<T, Long> inputCounts;
-  private final T minimumIncluded;
-  private final T maximumIncluded;
-  private final T finestInterval;
+  private final Long minimumIncluded;
+  private final Long maximumIncluded;
+  private final Long finestInterval;
   private long size;
-
-  public static RangeRunningMedian<Long> newLongRangeRunningMedian(long min, long max, long ivl) {
-    return new RangeRunningMedian<Long>(min, max, ivl) {
-      @Override
-      protected double toDouble(Long a) {
-        return a.doubleValue();
-      }
-
-      @Override
-      protected int toInt(Long a) {
-        return a.intValue();
-      }
-
-      @Override
-      protected Long sub(Long a, Long b) {
-        return a - b;
-      }
-
-      @Override
-      protected Long add(Long a, Long b) {
-        return a + b;
-      }
-
-      @Override
-      protected Long div(Long a, Long b) {
-        return a / b;
-      }
-    };
-  }
-
-  public static RangeRunningMedian<Integer> newIntRangeRunningMedian(int min, int max, int ivl) {
-    return new RangeRunningMedian<Integer>(min, max, ivl) {
-      @Override
-      protected double toDouble(Integer a) {
-        return a.doubleValue();
-      }
-
-      @Override
-      protected int toInt(Integer a) {
-        return a.intValue();
-      }
-
-      @Override
-      protected Integer sub(Integer a, Integer b) {
-        return a - b;
-      }
-
-      @Override
-      protected Integer add(Integer a, Integer b) {
-        return a + b;
-      }
-
-      @Override
-      protected Integer div(Integer a, Integer b) {
-        return a / b;
-      }
-    };
-  }
 
   /**
    * Will allocate a number of buckets, like a histogram, starting at {@code minimumIncluded},
@@ -100,19 +40,20 @@ import java.util.HashMap;
    * @param maximumIncluded the largest value an update can be
    * @param finestInterval the distribution of values between these; recommend integer like 1.
    */
-  private RangeRunningMedian(T minimumIncluded, T maximumIncluded, T finestInterval) {
+  public RangeRunningMedian(Long minimumIncluded, Long maximumIncluded, Long finestInterval) {
     this.size = 0;
     this.minimumIncluded = minimumIncluded;
     this.maximumIncluded = maximumIncluded;
     this.finestInterval = finestInterval;
-    int size = toInt(div(sub(maximumIncluded, minimumIncluded), finestInterval)) + 1;
-    inputCounts = new HashMap<>(size);
-
-    T currentNumber = minimumIncluded;
-    for (int i = 0; i < size; i++) {
-      inputCounts.put(currentNumber, 0L);
-      currentNumber = add(currentNumber, finestInterval);
+    Long longSize = ((maximumIncluded - minimumIncluded) / finestInterval) + 1;
+    if (longSize > Integer.MAX_VALUE) {
+      // This probably won't fit in a HashMap, but we'll try.
+      System.err.printf(
+          "Error: Range from %d to %d by %d is too big for the max number of buckets\n",
+          minimumIncluded, maximumIncluded, finestInterval);
     }
+    int size = longSize.intValue();
+    inputCounts = new HashMap<>(size);
   }
 
   /**
@@ -123,11 +64,11 @@ import java.util.HashMap;
    */
   @Override
   public double update(T input) {
-    if (!inputCounts.containsKey(input)) {
+    if (input.longValue() < minimumIncluded || input.longValue() > maximumIncluded) {
       throw new IllegalArgumentException(
           "The input falls outside the range given and construction time");
     }
-    inputCounts.put(input, inputCounts.get(input) + 1L);
+    inputCounts.put(input, inputCounts.getOrDefault(input, 0L) + 1L);
     size++;
     return median();
   }
@@ -140,25 +81,20 @@ import java.util.HashMap;
    */
   private double median() {
     long count = 0;
-    T currentNumber = minimumIncluded;
+    Long currentNumber = minimumIncluded;
     while (currentNumber.compareTo(maximumIncluded) <= 0
            && 2 * count < size) {
-      count += inputCounts.get(currentNumber);
-      currentNumber = add(currentNumber, finestInterval);
+      count += inputCounts.getOrDefault(currentNumber, 0L);
+      currentNumber = currentNumber + finestInterval;
     }
     if (size % 2 != 0) {
-      return toDouble(sub(currentNumber, finestInterval));
+      return currentNumber - finestInterval;
     } else {
       if (2 * count > size) {
-        return toDouble(sub(currentNumber, finestInterval));
+        return currentNumber - finestInterval;
       } else {
-        return toDouble(sub(add(currentNumber, currentNumber), finestInterval)) / 2.0;
+        return (currentNumber + currentNumber - finestInterval) / 2.0;
       }
     }
   }
-  protected abstract double toDouble(T a);
-  protected abstract int toInt(T a);
-  protected abstract T sub(T a, T b);
-  protected abstract T add(T a, T b);
-  protected abstract T div(T a, T b);
 }

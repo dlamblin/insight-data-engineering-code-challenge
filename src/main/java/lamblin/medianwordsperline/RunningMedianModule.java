@@ -88,6 +88,6 @@ public class RunningMedianModule {
     return new TransformingRunningMedian<>(
         wordCountTransformer, (arguments.unconstrained)
                               ? new QueueRunningMedian<Integer>()
-                              : RangeRunningMedian.newIntRangeRunningMedian(0, 50, 1));
+                              : new RangeRunningMedian<Integer>(0L, 50L, 1L));
   }
 }
