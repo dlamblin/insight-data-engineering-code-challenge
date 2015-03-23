@@ -121,7 +121,7 @@ Perl
 ----
 The _Perl_ version was a total rewrite, discarding the one-liner approach.
 It was quick and easy to make and I hope the comments keep it readable.
-This version's running median command mirrors the [`RangeRunningMedian`][RRM]
+This version's [running median command][PRM] mirrors the [`RangeRunningMedian`][RRM]
 frequency counting approach, making finding the median a $O(1)$ operation
 after a $O(n \log n)$ sort. It doesn't' preallocate the size of the hash of
 frequencies, so no range need be specified.
@@ -251,7 +251,7 @@ If you try out my code, in the output of words you will see results like these
     htmlheadtitle404
 
 That means everything is working normally; there will be many more normal
-words found accross input files.
+words found across input files.
 
 ##### Thanks to: #####
 > Anne Bessman and David Drummond for answering questions and making the challenge
@@ -275,7 +275,7 @@ words found accross input files.
 [WA]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/main/java/lamblin/wordcount/WordAccumulator.java "WordAccumulator"
 [WCT]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/main/java/lamblin/medianwordsperline/WordCountTransformer.java "WordCountTransformer"
 [RMM]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/main/java/lamblin/medianwordsperline/RunningMedianModule.java "RunningMedianModule"
-[dagger]: http://square.github.io/dagger/ "Dagger"
+[PRM]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/main/perl/runinngMedianWordsPerLine.pl "Perl running median words per line"[dagger]: http://square.github.io/dagger/ "Dagger"
 [guava]: https://github.com/google/guava "com.google.common"
 [javastyle]: https://google-styleguide.googlecode.com/svn/trunk/javaguide.html "Google Java Style"
 [run]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/run.sh "run.sh"
