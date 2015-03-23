@@ -62,15 +62,24 @@ garbage collection. If the inputs were truly at scale, that would be
 necessary.
 
 ### Trade-offs ###
+
+#### Inversion of control ####
 The dependency injection allows me to swap out a range-limited frequency based
 running median class with a dual-heap based approach for the same that is not
 limited in input range, but which is hindered by needing to store each word
 count for each line. You can try it out with the `-u` option. See also `-h`.
 
+#### Compile time injection ####
 The dependency injection might not be used idomatically, some cleanup of Dagger
 modules seems in order as I learn more about Dagger. At least it's compile time
 and doesn't cause a bunch of overhead at startup.
 
+#### Supporting stop words ####
+Both the word count and running median tool will ignore empty words, numbers,
+or words made of punctuation like `###`. Additionally they can ignore words
+listed in a stop words file, or a directory of files, but not `stdin`.
+
+#### Concurrent word counting ####
 The word counting accumulator was implemented with a concurrent multiset. This
 allows it to have a thread pool updating the multiset as words come in, and then
 terminate when the set's results are requested. The accumulated maintains a 
@@ -78,26 +87,31 @@ separate sorted set of words so that the output can be shown in order.
 This uses more memory overall. It works pretty quickly, but I had two other
 versions I wanted to develop (I ran out of time for them):  
 
-- using a tree multiset would maintain its key set in sorted order, using less
+- Using a tree multiset would maintain its key set in sorted order, using less
   memory probably than I do now. However, a quick test of dropping it in showed
   it really wasn't concurrent, so it remains to be seen if it would compete
   with the threaded version. There is a chance that for normal size corpuses
   the overhead of managing a threadpool is actually more significant than the
   savings of bringing more cores to bear on the work.
-- The other option I wanted to try would be a trie based accumulator.  I had a
-  trie class written during a phone interview but not on hand, and it would be
-  very memory efficient, and also allow for alphabetic traversal (pre-order)
-  easily for the output. With input and retrieval being $O(1)$ regarding the
-  number of words stored or $O(n)$ regarding the length of the word being stored
-  or retreived.
+- A trie based accumulator.  I had a _`C#`_ trie class (written during a phone 
+  interview but didn't have it on hand, and it would be very memory efficient, 
+  and also allow for alphabetic traversal (pre-order) easily for the output. 
+  With input and retrieval being $O(1)$ regarding the number of words stored or
+  $O(n)$ regarding the length of the word being stored or retrieved.
 
+#### Maintainable code ####  
 The verbosity of the input and output handling allow for some further development
 and expansion of scope, not to mention optional median and word accumulators.
 E.G. doing a running median of a different statistic per line than word count
-would be a matter of swappig in a different transformation function in the
+would be a matter of swapping in a different transformation function in the
 configuration module.
 
-The Guava functional approach was used when reading directories. This allows the
+#### Testing ####
+While I did add in a structure for testing the _Java_ code, not many classes underwent testing.
+The dependency injection should help make the whole project testable if we'd time to add more tests.
+
+#### Functional brevity, and directory order ####
+The [Guava](https://github.com/google/guava) functional approach was used when reading directories. This allows the
 directory readers to be composed of chained file readers, which in turn (with
 standard input readers) are based on just the main logic in the reader handlers.
 The warning in Guava about functional programming being unclear does allow for
@@ -220,6 +234,5 @@ skip using `run.sh` to use the programs as in the below demonstration:
     shout          	2
     so             	1
     who            	2
-
 
 
