@@ -26,8 +26,7 @@ while(<>){			# For every line of input from all args as files
 	$counts{$count}++;	# Count one more where the hash-key is wordcount
 	my @keys = sort(	# I'd like to eliminate this sort by
 		keys %counts);	# binding to a hash with an always sorted keyset
-				
-				
+
 	my $sum = 0;
 	my $key;
 	while($sum*2 < $lines	# I need to progress through the smallest half
@@ -43,4 +42,3 @@ while(<>){			# For every line of input from all args as files
 	}
 	printf("%.1f\n", $med);
 }
-
