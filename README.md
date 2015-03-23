@@ -6,9 +6,9 @@ If you don't know what the challenge is about, first, please have a look at the
 Data Science Coding Challenge Example") with [its
 FAQ](https://github.com/InsightDataScience/cc-example#faq "Challenge FAQ") and
 such. You probably also see a few solutions all over GitHub. I think they got
-started in batches. Some started 2 weeks earlier, but I assume they overall has
+started in batches. Some started 2 weeks earlier, but I assume they overall had
 the same timeframe of about 5 days as I had. I do plan to continue updating
-this project as noted in the run.sh.
+this project as noted in the `run.sh`.
 
 Simply put, the goal is to count the words in some text files, and to calculate
 the median number of words per line in the same files. Using some definition
@@ -31,8 +31,8 @@ like these "words":
 Implemented Versions:
 
 - One-liners
-- Java
-- Perl
+- _Java_
+- _Perl_
 
 One-liners
 ----------
@@ -70,14 +70,14 @@ limited in input range, but which is hindered by needing to store each word
 count for each line. You can try it out with the `-u` option. See also `-h`.
 
 #### Compile time injection ####
-The dependency injection might not be used idomatically, some cleanup of Dagger
+The dependency injection might not be used idiomatically, some cleanup of Dagger
 modules seems in order as I learn more about Dagger. At least it's compile time
 and doesn't cause a bunch of overhead at startup.
 
 #### Supporting stop words ####
 Both the word count and running median tool will ignore empty words, numbers,
 or words made of punctuation like `###`. Additionally they can ignore words
-listed in a stop words file, or a directory of files, but not `stdin`.
+listed in a stopwords file, or a directory of files, but not `stdin`.
 
 #### Concurrent word counting ####
 The word counting accumulator was implemented with a concurrent multiset. This
