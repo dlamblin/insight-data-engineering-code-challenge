@@ -161,7 +161,7 @@ demonstration:
     4.5
     4.0
     4.5
-    $ ./src/main/perl/runinngMedianWordsPerLine.pl sample.txt 
+    $ ./src/main/perl/runningMedianWordsPerLine.pl sample.txt
     5.0
     4.5
     4.0
@@ -275,7 +275,7 @@ words found across input files.
 [WA]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/main/java/lamblin/wordcount/WordAccumulator.java "WordAccumulator"
 [WCT]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/main/java/lamblin/medianwordsperline/WordCountTransformer.java "WordCountTransformer"
 [RMM]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/main/java/lamblin/medianwordsperline/RunningMedianModule.java "RunningMedianModule"
-[PRM]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/main/perl/runinngMedianWordsPerLine.pl "Perl running median words per line"
+[PRM]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/main/perl/runningMedianWordsPerLine.pll "Perl running median words per line"
 [dagger]: http://square.github.io/dagger/ "Dagger"
 [guava]: https://github.com/google/guava "com.google.common"
 [javastyle]: https://google-styleguide.googlecode.com/svn/trunk/javaguide.html "Google Java Style"

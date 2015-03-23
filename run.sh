@@ -47,7 +47,7 @@ main() {
     local java_md_cmd="${java_bin_path}/runningMedianWordsPerLine"
 
     local perl_wc_cmd="./src/main/perl/wordCount.pl"
-    local perl_md_cmd="./src/main/perl/runinngMedianWordsPerLine.pl"
+    local perl_md_cmd="./src/main/perl/runningMedianWordsPerLine.pl"
 
     local line_wc_cmd="./non-scalable_10min_oneliner1.pl"
     local line_md_cmd="./non-scalable_10min_oneliner2.pl"
