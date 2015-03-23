@@ -6,16 +6,15 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import dagger.ObjectGraph;
-import lamblin.common.CommonModule;
-import lamblin.source.word.WordSource;
-import lamblin.wordcount.WordCleaner;
+import lamblin.common.Module;
+import lamblin.common.source.line.LineSource;
 
 /**
  * The Insight Data Engineering Coding Challenge issued 2015-03-17
  * The Java version.
- *
+ * <p/>
  * Second part, running median of words per line.
- *
+ * <p/>
  * Created by dlamblin on 3/22/15.
  *
  * @author Daniel Lamblin
@@ -23,32 +22,28 @@ import lamblin.wordcount.WordCleaner;
 public class RunningMedianWordsPerLineCmd {
 
   @Inject
-  WordCleaner wordCleaner;
-
-  @Inject
   @Named("input")
-  WordSource wordSource;
+  LineSource lineSource;
 
   @Inject
   PrintStream output;
 
+  @Inject
+  RunningMedian<String> runningMedian;
+
   public static void main(String[] args) {
     // Setup injection based on arguments
-    ObjectGraph objectGraph = ObjectGraph.create(new RunningMedianModule(), new CommonModule(args));
+    ObjectGraph objectGraph = ObjectGraph.create(new RunningMedianModule(), new Module(args));
     RunningMedianWordsPerLineCmd perLineCmd = objectGraph.get(RunningMedianWordsPerLineCmd.class);
 
-    // Start counting words
+    // Start counting words per line
     perLineCmd.countWordsPerLine();
   }
 
   private void countWordsPerLine() {
-    Iterable<String> cleanWords = wordCleaner.all(wordSource);
-    for (String word : cleanWords) {
+    for (String line : lineSource) {
+      output.printf("%.2f\n", runningMedian.update(line));
     }
-//    for (String word : wordAccumulator.getSortedWords()) {
-//      int count = wordAccumulator.getCount(word);
-//      output.printf("%-15s\t%d\n", word, count);
-//    }
     output.close();
   }
 }

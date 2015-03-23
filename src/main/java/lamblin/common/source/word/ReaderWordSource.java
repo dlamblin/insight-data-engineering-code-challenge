@@ -1,4 +1,4 @@
-package lamblin.source.word;
+package lamblin.common.source.word;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
@@ -20,15 +20,14 @@ import java.util.NoSuchElementException;
 */
 public class ReaderWordSource implements WordSource {
 
-  private final String sourceDescription;
   private final BufferedReader input;
-  private final Splitter splitter;
+  private final String sourceDescription;
+  private static final Splitter splitter = Splitter.on(CharMatcher.BREAKING_WHITESPACE)
+      .trimResults().omitEmptyStrings();
 
-  public ReaderWordSource(Reader in, String sourceDescription) {
+  public ReaderWordSource(Reader in, final String sourceDescription) {
     this.sourceDescription = sourceDescription;
-    splitter = Splitter.on(CharMatcher.BREAKING_WHITESPACE)
-        .trimResults().omitEmptyStrings();
-    input = new BufferedReader(in);
+    input = (in instanceof BufferedReader) ? (BufferedReader) in : new BufferedReader(in);
   }
 
   @Override

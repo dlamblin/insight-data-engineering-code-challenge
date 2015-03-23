@@ -1,4 +1,4 @@
-package lamblin.wordcount;
+package lamblin.common.source.word.filter;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -8,7 +8,7 @@ import com.google.common.collect.Sets;
 import java.util.HashSet;
 import java.util.regex.Pattern;
 
-import lamblin.source.word.WordSource;
+import lamblin.common.source.word.WordSource;
 
 /**
  * This class cleans up the each iterated word by removing non-AlphaNumerics, stop words, and words
@@ -23,7 +23,7 @@ public class WordCleaner {
   private static Pattern nonAlphaNumerics = Pattern.compile("\\W");
   private static Pattern entirelyNumbers = Pattern.compile("^\\d*$");
 
-  private final Function<String, String> cleanWordFunction = new Function<String, String>() {
+  private static final Function<String, String> cleanWordFunction = new Function<String, String>() {
     @Override
     /**
      * LowerCases input, then removes any non-AlphaNumeric characters,
@@ -55,17 +55,6 @@ public class WordCleaner {
   }
 
   /**
-   * Cleans the input as a word without non-AlphaNumeric characters, and empties strings which are
-   * numbers.
-   *
-   * @param input the word to clean
-   * @return the cleaned result
-   */
-  public String word(String input) {
-    return cleanWordFunction.apply(input);
-  }
-
-  /**
    * Cleans all words as they're iterated and skips over words that were stop-words or were emptied
    * by cleaning.
    *
@@ -81,7 +70,7 @@ public class WordCleaner {
 
   private void initializeStopWords() {
     for (String stopWord : stopWordsSource) {
-      stopWord = word(stopWord);
+      stopWord = cleanWordFunction.apply(stopWord);
       if (!stopWord.isEmpty()) {
         stopWordSet.add(stopWord);
       }

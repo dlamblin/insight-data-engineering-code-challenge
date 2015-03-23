@@ -6,8 +6,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import dagger.ObjectGraph;
-import lamblin.common.CommonModule;
-import lamblin.source.word.WordSource;
+import lamblin.common.Module;
+import lamblin.common.source.word.filter.WordCleaner;
+import lamblin.common.source.word.WordSource;
 
 /**
  * The Insight Data Engineering Coding Challenge issued 2015-03-17
@@ -36,7 +37,7 @@ public class WordCountCmd {
 
   public static void main(String[] args) {
     // Setup injection based on arguments
-    ObjectGraph objectGraph = ObjectGraph.create(new WordCountModule(), new CommonModule(args));
+    ObjectGraph objectGraph = ObjectGraph.create(new WordCountModule(), new Module(args));
     WordCountCmd wordCountCmd = objectGraph.get(WordCountCmd.class);
 
     // Start counting words

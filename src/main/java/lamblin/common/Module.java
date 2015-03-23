@@ -3,17 +3,21 @@ package lamblin.common;
 import com.beust.jcommander.JCommander;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Provides;
-import lamblin.source.word.DirectoryWordSource;
-import lamblin.source.word.EmptyWordSource;
-import lamblin.source.word.FileWordSource;
-import lamblin.source.word.InputStreamWordSource;
-import lamblin.source.word.WordSource;
-import lamblin.wordcount.WordCleaner;
+import lamblin.common.source.word.DirectoryWordSource;
+import lamblin.common.source.EmptySource;
+import lamblin.common.source.word.FileWordSource;
+import lamblin.common.source.word.InputStreamWordSource;
+import lamblin.common.source.word.WordSource;
+import lamblin.common.source.word.filter.WordCleaner;
 
 /**
  * Created by dlamblin on 3/22/15.
@@ -23,23 +27,23 @@ import lamblin.wordcount.WordCleaner;
 @dagger.Module(
     library = true
 )
-public class CommonModule {
+public class Module {
 
   private final String[] args;
 
   /**
-   * {@link CommonModule} configures parts of both {@link lamblin.wordcount.WordCountCmd}
+   * {@link Module} configures parts of both {@link lamblin.wordcount.WordCountCmd}
    * and {@link lamblin.medianwordsperline.RunningMedianWordsPerLineCmd}.
    *
    * @param args command line arguments to parse
    */
-  public CommonModule(String[] args) {
+  public Module(String[] args) {
     this.args = args;
   }
 
   /**
-   * Identifies the type of file or directory (or none) given as an arguments and provides the
-   * appropriate {@link lamblin.source.word.WordSource} for it.
+   * Identifies the type of file or directory (or none) given as an argument and provides the
+   * appropriate {@link lamblin.common.source.word.WordSource} for it.
    * Optionally opens {@code stdin} if {@code arg} is null.
    *
    * Note that Dagger does not allow for any provider and thus neither any constructor used in this
@@ -52,7 +56,7 @@ public class CommonModule {
    */
   public static WordSource getWordSourceForArgument(String argName, String arg, boolean useStdIn) {
     if (arg == null) {
-      return useStdIn ? new InputStreamWordSource() : new EmptyWordSource();
+      return useStdIn ? new InputStreamWordSource() : new EmptySource();
     } else {
       File file = new File(arg);
       if (file.isDirectory()) {
@@ -89,15 +93,33 @@ public class CommonModule {
   WordSource provideStopWordSource(Arguments arguments) {
     final String argName = "--stopwords";
     final String arg = arguments.stopwords;
-    return CommonModule.getWordSourceForArgument(argName, arg, false);
+    return Module.getWordSourceForArgument(argName, arg, false);
   }
 
   @Provides
   @Singleton
   /**
-   * Provides the {@link lamblin.wordcount.WordCleaner} which also uses the stop-words.
+   * Provides the {@link lamblin.common.source.word.filter.WordCleaner} which also uses the stop-words.
    */
   WordCleaner provideWordCleaner(@Named("stop words") WordSource stopWordSource) {
     return new WordCleaner(stopWordSource);
+  }
+
+  @Provides
+  @Singleton
+  /**
+   * Provides the {@link java.io.PrintStream} to write to.
+   */
+  PrintStream providePrintStream(Arguments arguments) {
+    if (null != arguments.output) {
+      File file = new File(arguments.output);
+      try {
+        return new PrintStream(file, StandardCharsets.UTF_8.name());
+      } catch (FileNotFoundException | UnsupportedEncodingException e) {
+        e.printStackTrace();
+      }
+      System.err.println("Unable to open file \"" + arguments.output + "\" using stdout.");
+    }
+    return System.out;
   }
 }

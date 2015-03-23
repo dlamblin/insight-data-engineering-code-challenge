@@ -1,4 +1,4 @@
-package lamblin.source.word;
+package lamblin.common.source.word;
 
 import java.io.InputStreamReader;
 

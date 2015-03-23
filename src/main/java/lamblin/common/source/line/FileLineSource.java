@@ -1,4 +1,4 @@
-package lamblin.source.word;
+package lamblin.common.source.line;
 
 import java.io.CharArrayReader;
 import java.io.File;
@@ -9,18 +9,18 @@ import java.io.Reader;
 /**
  * Reads words out of a {@link File}.
  *
- * Created by dlamblin on 3/21/15.
+ * Created by dlamblin on 3/22/15.
  *
  * @author Daniel Lamblin
-*/
-public class FileWordSource extends ReaderWordSource {
+ */
+public class FileLineSource extends ReaderLineSource {
 
-  public FileWordSource(File file) {
+  public FileLineSource(File file) {
     super(getFileReader(file), "File: \"" + file.getName() + "\"");
   }
 
   /**
-   * Opens a file reader or an empty char array as a word source.
+   * Opens a file reader or an empty char array as a line source.
    * Because Dagger really doesn't want any thrown errors in constructors or providers,
    * this is the easiest way to gracefully read no words from an non-existent file.
    *

@@ -1,4 +1,4 @@
-package lamblin.source.word;
+package lamblin.common.source.word;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
@@ -9,6 +9,8 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
+
+import lamblin.common.source.EmptySource;
 
 /**
  * Reads words out of each file in a directory. Does not recurse directories.
@@ -55,7 +57,7 @@ public class DirectoryWordSource implements WordSource {
             @Override
             public WordSource apply(Path input) {
               final File file = input.toFile();
-              return file.isFile() ? new FileWordSource(file) : new EmptyWordSource();
+              return file.isFile() ? new FileWordSource(file) : new EmptySource();
             }
           }
       ).iterator();

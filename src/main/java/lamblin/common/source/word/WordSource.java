@@ -1,9 +1,7 @@
-package lamblin.source.word;
+package lamblin.common.source.word;
 
 /**
  * An Iterable source of words.
- *
- * TODO (dlamblin): perhaps add some more specific methods.
  *
  * Created by dlamblin on 3/21/15.
  *
