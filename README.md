@@ -254,14 +254,14 @@ That means everything is working normally; there will be many more normal
 words found across input files.
 
 ##### Thanks to: #####
-> Anne Bessman and David Drummond for answering questions and making the challenge
-> the Guava maintainers for such a bredth of performant time-savers
-> the Dagger maintainers for making DI less error-prone
-> the JCommander maintainers for a flexible argument parser
-> the Gradle maintainers for their fine minimally-full-featured build-package-deploy toolset
-> JetBrains Community Edition contributors for the slickest IDE this side of a text editor
-> Perl 5 maintainers for keeping the tool, that can do these tasks in 1 to 40 lines, fast as ever
-> Git and GitHub for complementing each other and focusing on what you each do best
+> Anne Bessman and David Drummond for answering questions and making the challenge  
+> the Guava maintainers for such a bredth of performant time-savers  
+> the Dagger maintainers for making DI less error-prone  
+> the JCommander maintainers for a flexible argument parser  
+> the Gradle maintainers for their fine minimally-full-featured build-package-deploy toolset  
+> JetBrains Community Edition contributors for the slickest IDE this side of a text editor  
+> Perl 5 maintainers for keeping the tool, that can do these tasks in 1 to 40 lines, fast as ever  
+> Git and GitHub for complementing each other and focusing on what you each do best  
 
 ###### - Daniel Lamblin ######
 
