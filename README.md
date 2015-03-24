@@ -16,23 +16,24 @@ One-liners
 The one-liners [`non-scalable_10min_oneliner*.pl`][oneliner1] were the first
 code I  produced to answer the challenge, they really only took 10-15 minutes
 to write. After looking at the FAQ about removing numbers, they were updated 
-quickly to match output from the _Java_ program.
+to match output from the _Java_ program.
 The [naive median approach][oneliner2]
 over all, turns out to be slow, because it's using an array, and sorting it
 $O(n \log n)$ every time something is added, to give the median an $O(1)$
 look-up performance after the sort. This is a total of so $O(n \log n)$ for
 each line, growing with each line processed.
 
-I wanted to show a quick (to implement) basic solution, with the full
+I wanted to show a quick implementation and basic solution, with the full
 caveat that one-liners are not clean, well documented nor scalable.
 
 Java
 ----
 While I originally thought to move on to writing this in a couple of languages,
 _Python_ and _Go_ sprang to mind, I wanted to commit to also adding in _Java_
-code. Knowing that _Java_ is verbose, and trying out three new libraries, I was
-a bit new to: Gradle, Dagger, and JCommander, I spent all my available time on
-this language's version. I hope it doesn't seem over-engineered.
+code. Knowing that _Java_ is verbose, and trying out three new libraries and
+tools, I was a bit new to: Gradle, Dagger, and JCommander, I spent all my
+available time on this language's version. I hope it doesn't seem
+over-engineered.
 
 ### Trade-offs ###
 
