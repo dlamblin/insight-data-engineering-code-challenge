@@ -14,11 +14,11 @@ please read this [quick overview](#challenge-overview-for-the-unfamiliar).
 One-liners
 ----------
 The one-liners [`non-scalable_10min_oneliner*.pl`][oneliner1] were the first
-code I  produced to answer the challenge, they really only took 10-15 minutes
-to write. After looking at the FAQ about removing numbers, they were updated 
-to match output from the _Java_ program.
+code I  produced to answer the challenge, in oneliner form, not a lot of time
+was spent on them. They were updated after looking at the FAQ point on removing
+numbers, and now  match output from the _Java_ program.
 The [naive median approach][oneliner2]
-over all, turns out to be slow, because it's using an array, and sorting it
+over all turns out to be slow, because it's using an array, and sorting it
 $O(n \log n)$ every time something is added, to give the median an $O(1)$
 look-up performance after the sort. This is a total of so $O(n \log n)$ for
 each line, growing with each line processed.
@@ -33,7 +33,7 @@ _Python_ and _Go_ sprang to mind, I wanted to commit to also adding in _Java_
 code. Knowing that _Java_ is verbose, and trying out three new libraries and
 tools, I was a bit new to: Gradle, Dagger, and JCommander, I spent all my
 available time on this language's version. I hope it doesn't seem
-over-engineered.
+over-engineered. There is some [JavaDoc][javadoc] for it.
 
 ### Trade-offs ###
 
@@ -124,7 +124,7 @@ The _Perl_ version was a total rewrite, discarding the one-liner approach.
 It was quick and easy to make and I hope the comments keep it readable.
 This version's [running median command][PRM] mirrors the [`RangeRunningMedian`][RRM]
 frequency counting approach, making finding the median a $O(1)$ operation
-after a $O(n \log n)$ sort. It doesn't' preallocate the size of the hash of
+after a $O(n \log n)$ sort. It doesn't preallocate the size of the hash of
 frequencies, so no range need be specified.
 
 As noted in the source, I am certain that modules exist to bind the hash to
@@ -282,3 +282,5 @@ words found across input files.
 [javastyle]: https://google-styleguide.googlecode.com/svn/trunk/javaguide.html "Google Java Style"
 [run]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/run.sh "run.sh"
 [shellstyle]: https://google-styleguide.googlecode.com/svn/trunk/shell.xml "Google shell style guide"
+[javadoc]: http://dlamblin.github.io/insight-data-engineering-code-challenge/javadoc/index.html "JavaDoc"
+
