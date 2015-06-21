@@ -76,9 +76,9 @@ quickly, but I had two other versions I wanted to develop, time permitting:
   with the threaded version. There is a chance that for normal size corpuses
   the overhead of managing a threadpool is more significant than the savings
   of bringing more cpu cores to bear on the work.
-- A trie based accumulator. I had a _C#_ trie class (written during a phone 
-  interview) but not on hand. It would seem to be more memory efficient, 
-  and also allow for alphabetic traversal (pre-order) easily. 
+- A trie based accumulator. I had a _C#_ trie class (written during a phone
+  interview) but not on hand. It would seem to be more memory efficient,
+  and also allow for alphabetic traversal (pre-order) easily.
   With input and retrieval being $O(1)$ regarding the number of words stored or
   $O(n)$ regarding the length of the word being stored or retrieved, it should
   perform better than the other sorting approaches.
@@ -100,16 +100,16 @@ more development time. There are tests for the most important WordSources.
 #### Functional brevity, and directory order ####
 The [Guava][guava] functional approach was used when reading directories. This
 allows the directory readers to be composed of chained file readers, which in
-turn (with standard input readers) are based on just the main logic in the 
-Reader*Source. The warning in Guava about functional programming being 
-unclear still allows for its use when theres a significant reduction in lines
+turn (with standard input readers) are based on just the main logic in the
+Reader*Source. The warning in Guava about functional programming being
+unclear still allows for its use when there's a significant reduction in lines
 thus aiding readability. It should be noted that the DirectoryStream claims
 to be unordered but always behaved in alphabetic order on my system, prompting
 me to drop circling back to sort the directory listing for the running median
 in the interest of time.
 
 ### Other Notes ###
-The style of the _Java_ code tries to hue to the
+The style of the _Java_ code tries to hew to the
 [Google Java Style Guide][javastyle].
 
 The arguments, input and output options are more flexible than the challenge
@@ -152,12 +152,12 @@ manually skip using `run.sh` and use the programs directly as in the below
 demonstration:
 
     $ project='InsightDataEngineeringCodingChallenge'
-    $ perl non-scalable_10min_oneliner2.pl sample.txt 
+    $ perl non-scalable_10min_oneliner2.pl sample.txt
     5.0
     4.5
     4.0
     4.5
-    $ ./build/install/$project/bin/runningMedianWordsPerLine -i sample.txt 
+    $ ./build/install/$project/bin/runningMedianWordsPerLine -i sample.txt
     5.0
     4.5
     4.0
@@ -167,7 +167,7 @@ demonstration:
     4.5
     4.0
     4.5
-    $ perl non-scalable_10min_oneliner1.pl sample.txt 
+    $ perl non-scalable_10min_oneliner1.pl sample.txt
     a              	1
     big            	1
     call           	1
@@ -181,7 +181,7 @@ demonstration:
     shout          	2
     so             	1
     who            	2
-    $ ./build/install/$project/bin/wordCount -i sample.txt 
+    $ ./build/install/$project/bin/wordCount -i sample.txt
     a              	1
     big            	1
     call           	1
@@ -195,7 +195,7 @@ demonstration:
     shout          	2
     so             	1
     who            	2
-    $ ./src/main/perl/wordCount.pl sample.txt 
+    $ ./src/main/perl/wordCount.pl sample.txt
     a              	1
     big            	1
     call           	1
@@ -209,7 +209,7 @@ demonstration:
     shout          	2
     so             	1
     who            	2
-    $ ./build/install/$project/bin/wordCount -i sample.txt -s stop.txt 
+    $ ./build/install/$project/bin/wordCount -i sample.txt -s stop.txt
     big            	1
     call           	1
     every          	2
@@ -256,7 +256,7 @@ words found across input files.
 
 ##### Thanks to: #####
 > Anne Bessman and David Drummond for answering questions and making the challenge  
-> the Guava maintainers for such a bredth of performant time-savers  
+> the Guava maintainers for such a breadth of performant time-savers  
 > the Dagger maintainers for making DI less error-prone  
 > the JCommander maintainers for a flexible argument parser  
 > the Gradle maintainers for their fine minimally-full-featured build-package-deploy toolset  
@@ -283,4 +283,3 @@ words found across input files.
 [run]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/run.sh "run.sh"
 [shellstyle]: https://google-styleguide.googlecode.com/svn/trunk/shell.xml "Google shell style guide"
 [javadoc]: http://dlamblin.github.io/insight-data-engineering-code-challenge/javadoc/index.html "JavaDoc"
-

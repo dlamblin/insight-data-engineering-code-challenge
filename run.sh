@@ -154,7 +154,7 @@ main() {
             ;;
         go)
             makedirs "${dir_in}" "${dir_out}"
-            echo "Not yet implementedaw. I had under a week but I'm definitely working on it" >&2
+            echo "Not yet implemented. I had under a week but I'm definitely working on it" >&2
             ;;
         clean)
             echo "Clean isn't a language, but I am going to" \
