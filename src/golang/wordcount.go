@@ -27,7 +27,9 @@ func main() {
 		// Break line into words and count them in the map.
 		words := strings.Fields(line)
 		for _, word := range words {
-			m[cleaner.Clean(word)]++
+			if cleanWord, err := cleaner.Clean(word); err == nil {
+				m[cleanWord]++
+			}
 		}
 	}
 	// Sort the words in the map.
