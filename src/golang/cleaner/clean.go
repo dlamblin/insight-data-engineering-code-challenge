@@ -60,7 +60,7 @@ func SetStopWordsFromReader(r *bufio.Reader) error {
 			}
 			break
 		}
-		// Break line into words and count them in the map.
+		// Trim the newline from the word and add it as a stop word.
 		stopWords[strings.TrimSpace(word)]++
 	}
 	return nil
