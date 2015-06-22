@@ -4,12 +4,11 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"insight-data-engineering-code-challenge/src/golang/cleaner"
 	"io"
 	"os"
 	"sort"
 	"strings"
-
-	"./cleaner"
 )
 
 // Breaks up input into lines and lines into words. Counts words in a map.
@@ -25,8 +24,6 @@ func main() {
 		cleaner.SetStopWordsFromReader(bufio.NewReader(f))
 	}
 
-	m := make(map[string]int64)
-
 	// Set up the input either from a file or stdin.
 	// TODO(lamblin) identify when a given path is a dir and read all its files
 	var reader *bufio.Reader
@@ -36,6 +33,30 @@ func main() {
 	} else {
 		reader = bufio.NewReader(os.Stdin)
 	}
+
+	m := readAndCount(reader)
+	outputCounts(m)
+}
+
+// openIfNot opens the path of a flag string if it is not the default,
+// returns the os.File pointer or nil if the flag was the default.
+func openIfNot(stringFlag *string, isNot string) *os.File {
+	if *stringFlag != isNot {
+		f, err := os.Open(*stringFlag)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Could not open file: %q, reason: %q",
+				*stringFlag, err)
+			panic(err)
+		}
+		return f
+	}
+	return nil
+}
+
+// readAndCount reads the reader given and counts the words into a map which
+// is returned.
+func readAndCount(reader *bufio.Reader) map[string]int64 {
+	m := make(map[string]int64)
 
 	for {
 		// Read lines.
@@ -54,6 +75,11 @@ func main() {
 			}
 		}
 	}
+	return m
+}
+
+// outputCounts outputs the words counted in sorted alphabetical order.
+func outputCounts(m map[string]int64) {
 	// Sort the words in the map.
 	words := make([]string, len(m))
 	var i int
@@ -66,19 +92,4 @@ func main() {
 	for _, word := range words {
 		fmt.Printf("%-15v %v\n", word, m[word])
 	}
-}
-
-// openIfNot opens the path of a flag string if it is not the default,
-// returns the os.File pointer or nil if the flag was the default.
-func openIfNot(stringFlag *string, isNot string) *os.File {
-	if *stringFlag != isNot {
-		f, err := os.Open(*stringFlag)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Could not open file: %q, reason: %q",
-				*stringFlag, err)
-			panic(err)
-		}
-		return f
-	}
-	return nil
 }
