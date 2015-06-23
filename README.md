@@ -7,6 +7,7 @@ Implemented versions overview
 - [_One-liners_](#one-liners)
 - [_Java_](#java)
 - [_Perl_](#perl)
+- [_Go_](#go)
 
 If you're unfamiliar with the challenge this project refers to,
 please read this [quick overview](#challenge-overview-for-the-unfamiliar).
@@ -133,6 +134,16 @@ exists a binding to disk backing. This would allowing the program to exit and
 then pick up with the running median from before exiting. I'm unsure how this
 would affect performance, but the sorted keys should speed up the overall
 process by reducing the work to sort keys after each insert.
+
+Go
+--
+The _Go_ version was added well after the completion of the challenge. It
+uses only a histogram approach to the running median problem. While there's
+opportunities to parallelize the processing in Go, I haven't as such done so as
+both updating the word count map and updating the counts per line seen would
+need to be locked from concurrent updates by the worker pool of goroutines.
+There's a possibility that the benefits of letting goroutines handle the string
+and regular expression matching would help in utilizing all available cores.
 
 Shell script
 ------------
