@@ -17,7 +17,7 @@ usage() {
 \tperl\truns word count and running median in perl.
 \toneliner\truns word count and running median in perl oneliners.
 \tpython\truns word count and running median in python. [not-yet-implemented]
-\tgo\truns word count and running median in go.         [not-yet-implemented]
+\tgo\truns word count and running median in go.
 
 END
     exit 0
@@ -51,6 +51,9 @@ main() {
 
     local line_wc_cmd="./non-scalable_10min_oneliner1.pl"
     local line_md_cmd="./non-scalable_10min_oneliner2.pl"
+
+    local go_wc_cmd="go run ./src/golang/wordcount/wordcount.go"
+    local go_md_cmd="go run ./src/golang/running-median/running-median.go"
 
     #Start processing
     case ${command} in
@@ -154,7 +157,11 @@ main() {
             ;;
         go)
             makedirs "${dir_in}" "${dir_out}"
-            echo "Not yet implemented. I had under a week but I'm definitely working on it" >&2
+            echo "I assume you have go installed. You may need to set your GOPATH" >&2
+            echo "Running word count." >&2
+            cat "${dir_in}"/* | ${go_wc_cmd} > "${dir_out}/wc_result.txt"
+            echo "Running median word count per line." >&2
+            cat "${dir_in}"/* | ${go_md_cmd} > "${dir_out}/med_result.txt"
             ;;
         clean)
             echo "Clean isn't a language, but I am going to" \
