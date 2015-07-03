@@ -1,6 +1,18 @@
 Insight Data Engineering Coding Challenge
 =========================================
 
+Once, current, and future state
+-------------------------------
+
+- Working head of the master branch: contains progress towards solving the
+[challenge as updated on 2015-07-02](#challenge-july). Once ready the submitted
+version will be tagged as v2.0.
+- v1.1: The version you're reading now is tagged as v1.1. It represents the
+solution to the challenge as posted on 2015-03-17, linked at the bottom of this
+file.
+- v1.0: The solution as submitted the 2015-03-17 challenge will be retroactively
+tagged as v1.0.
+
 Implemented versions overview
 -----------------------------
 
@@ -277,7 +289,8 @@ words found across input files.
 
 ###### - Daniel Lamblin ######
 
-[challenge]: https://github.com/InsightDataScience/cc-example "Insight Data Science Coding Challenge Example"
+[challenge]: https://github.com/InsightDataScience/cc-example/tree/0d01fc8f703930ce522536230a3829d618f9fe99 "Insight Data Science Coding Challenge Example"
+[challenge-july]: https://github.com/InsightDataScience/cc-example/tree/1eb0b6e398c0ad069436e65f90dc6285c319acc1 "Insight Data Science Coding Challenge Example"
 [faq]: https://github.com/InsightDataScience/cc-example#faq "Challenge FAQ"
 [oneliner1]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/non-scalable_10min_oneliner1.pl
 [oneliner2]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/non-scalable_10min_oneliner2.pl
