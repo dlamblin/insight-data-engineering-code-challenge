@@ -68,14 +68,12 @@ main() {
             exit
             makedirs "${dir_in}" "${dir_out}"
             echo "Good choice; see all the source in src/{main,test}/java/lamblin" >&2
-            if [[ ! -x ${java_tweetstat_cmd} || ! -x ${java_md_cmd} ]]; then
-                echo "Installing: ${java_tweetstat_cmd} and ${java_md_cmd}" >&2
+            if [[ ! -x ${java_tweetstat_cmd} ]]; then
+                echo "Installing: ${java_tweetstat_cmd}" >&2
                 ${gradle_cmd} installApp
             fi
-            echo "Running word count." >&2
+            echo "Running tweet stats for word count and running median." >&2
             ${java_tweetstat_cmd} -i "${dir_in}" -o "${dir_out}/wc_result.txt"
-            echo "Running median word count per line." >&2
-            ${java_md_cmd} -i "${dir_in}" -o "${dir_out}/med_result.txt"
             ;;
         oneliner)
           echo "While updating from v1.1 to v2.0 the Perl oneline solution has broken." >&2
@@ -86,10 +84,8 @@ main() {
             if [[ $? -ne 0 ]]; then
                 echo "Actually, it seems you might not have perl installed." >&2
             else
-                echo "Running word count." >&2
+                echo "Running tweet stats for word count and running median." >&2
                 ${perl_cmd} ${line_tweetstat_cmd} "${dir_in}"/* > "${dir_out}/wc_result.txt"
-                echo "Running median word count per line. (This is naively slow)" >&2
-                ${perl_cmd} ${line_md_cmd} "${dir_in}"/* > "${dir_out}/med_result.txt"
             fi
             ;;
         perl)
@@ -97,10 +93,8 @@ main() {
           exit
             makedirs "${dir_in}" "${dir_out}"
             echo "See also the \"oneliner\" perl; and this source in src/main/perl" >&2
-            echo "Running word count." >&2
+            echo "Running tweet stats for word count and running median." >&2
             ${perl_tweetstat_cmd} "${dir_in}"/* > "${dir_out}/wc_result.txt"
-            echo "Running median word count per line." >&2
-            ${perl_md_cmd} "${dir_in}"/* > "${dir_out}/med_result.txt"
             ;;
         python)
             makedirs "${dir_in}" "${dir_out}"
@@ -111,10 +105,8 @@ main() {
           exit
             makedirs "${dir_in}" "${dir_out}"
             echo "I assume you have go installed. You may need to set your GOPATH" >&2
-            echo "Running word count." >&2
+            echo "Running tweet stats for word count and running median." >&2
             cat "${dir_in}"/* | ${go_tweetstat_cmd} > "${dir_out}/wc_result.txt"
-            echo "Running median word count per line." >&2
-            cat "${dir_in}"/* | ${go_md_cmd} > "${dir_out}/med_result.txt"
             ;;
         clean)
             echo "Clean isn't a language, but I am going to" \
