@@ -4,12 +4,12 @@ Insight Data Engineering Coding Challenge
 Once, current, and future state
 -------------------------------
 
-- Working head of the master branch: contains progress towards solving the
+- Working head of the master branch: [the version you're reading now]
+contains progress towards solving the
 [challenge as updated on 2015-07-02](#challenge-july). Once ready the submitted
-version will be tagged as v2.0.
-- v1.1: The version you're reading now is tagged as v1.1. It represents the
-solution to the challenge as posted on 2015-03-17, linked at the bottom of this
-file.
+version will be tagged as v2.0. All commits after v1.1 are breaking changes with respect to the earlier solution.
+- v1.1: represents the solution to the challenge as posted on 2015-03-17,
+linked at the bottom of this file.
 - v1.0: The solution as submitted the 2015-03-17 challenge will be retroactively
 tagged as v1.0.
 
@@ -17,12 +17,50 @@ Implemented versions overview
 -----------------------------
 
 - [_One-liners_](#one-liners)
-- [_Java_](#java)
+ (Refers to v1.1 - Broken)
 - [_Perl_](#perl)
+ (Refers to v1.1 - Broken)
+- [_Python_](#python)
+ (Forthcoming)
 - [_Go_](#go)
+ (Refers to v1.1 - Broken)
+- [_Java_](#java)
+ (Refers to v1.1 - Broken)
 
-If you're unfamiliar with the challenge this project refers to,
-please read this [quick overview](#challenge-overview-for-the-unfamiliar).
+Refer to the
+[challenge overview ](#challenge-overview-for-the-unfamiliar)
+if necessary.
+
+Changes
+-------
+
+### From v1.1 towards v2.0 ###
+- This readme links to the appropriate commit of the challenge repository.
+- The shell script no longer offers to download sample text from the Guttenburg project.
+- The input and output directories and their contents were renamed and updated to match the revised challenge.
+- The following are speculated changes:
+  - Total rewrites of the one-liner, Perl, and Go solutions.
+  - Addition of a Python solution.
+  - Large rewrite of the Java solution.
+    - Removed the input handling code for clarity and relying on the shell script to correctly pipe in files.
+    - Removed the word cleaner.
+    - Removed the queue (min-max heap) based running median in favor of the fixed histogram running median.
+    - Combined the output of two features into a single run.
+
+### From v1.0 to v1.1 ###
+- A solution was added in the _Go_ language.
+  - The _Go_ solution does not support reading whole directories unless they are piped into `stdin`. It does support stopwords.
+- The shell script was updated to run this solution.
+
+Shell script
+------------
+The file, `run.sh`, has its own usage information, which shows when
+invoked with `h` or `help`. It can run either the _oneliner_, _Java_, or _Perl_
+version, and it can also clean the project.
+
+Please do [read through the script][run]; it is also mostly in the
+[Google shell style][shellstyle]. As per the challenge, it is the primary
+method of using the solutions in this repository.
 
 One-liners
 ----------
@@ -38,6 +76,37 @@ each line, growing with each line processed.
 
 I wanted to show a quick implementation and basic solution, with the full
 caveat that one-liners are not clean, well documented nor scalable.
+
+Perl
+----
+The _Perl_ version was a total rewrite, discarding the one-liner approach.
+It was quick and easy to make and I hope the comments keep it readable.
+This version's [running median command][PRM] mirrors the [`RangeRunningMedian`][RRM]
+frequency counting approach, making finding the median a $O(1)$ operation
+after a $O(n \log n)$ sort. It doesn't preallocate the size of the hash of
+frequencies, so no range need be specified.
+
+As noted in the source, I am certain that modules exist to bind the hash to
+an implementation that retains its keys in sorted order, and that there also
+exists a binding to disk backing. This would allowing the program to exit and
+then pick up with the running median from before exiting. I'm unsure how this
+would affect performance, but the sorted keys should speed up the overall
+process by reducing the work to sort keys after each insert.
+
+Python
+------
+Forthcoming;
+The _Python_ version of the solution is in the same vein as the _Perl_ version.
+
+Go
+--
+The _Go_ version was added well after the completion of the challenge. It
+uses only a histogram approach to the running median problem. While there's
+opportunities to parallelize the processing in Go, I haven't as such done so as
+both updating the word count map and updating the counts per line seen would
+need to be locked from concurrent updates by the worker pool of goroutines.
+There's a possibility that the benefits of letting goroutines handle the string
+and regular expression matching would help in utilizing all available cores.
 
 Java
 ----
@@ -131,151 +200,34 @@ stdout. It may not seem like much compared to features built in _Perl_ and
 _Python_, but _Java_ is a little messy in this area, and even `nio` and `nio2`
 don't _truely_ help make file io code have a high degree of clarity.
 
-Perl
-----
-The _Perl_ version was a total rewrite, discarding the one-liner approach.
-It was quick and easy to make and I hope the comments keep it readable.
-This version's [running median command][PRM] mirrors the [`RangeRunningMedian`][RRM]
-frequency counting approach, making finding the median a $O(1)$ operation
-after a $O(n \log n)$ sort. It doesn't preallocate the size of the hash of
-frequencies, so no range need be specified.
-
-As noted in the source, I am certain that modules exist to bind the hash to
-an implementation that retains its keys in sorted order, and that there also
-exists a binding to disk backing. This would allowing the program to exit and
-then pick up with the running median from before exiting. I'm unsure how this
-would affect performance, but the sorted keys should speed up the overall
-process by reducing the work to sort keys after each insert.
-
-Go
---
-The _Go_ version was added well after the completion of the challenge. It
-uses only a histogram approach to the running median problem. While there's
-opportunities to parallelize the processing in Go, I haven't as such done so as
-both updating the word count map and updating the counts per line seen would
-need to be locked from concurrent updates by the worker pool of goroutines.
-There's a possibility that the benefits of letting goroutines handle the string
-and regular expression matching would help in utilizing all available cores.
-
-Shell script
-------------
-The support file, `run.sh`, has its own usage information, which shows when
-invoked with `h` or `help`. It can run either the _oneliner_, _Java_, or _Perl_
-version, and it can also clean the project and download a set of books from
-Gutenberg.org.
-
-Please do [read through the script][run]; it is also mostly in the
-[Google shell style][shellstyle]. As per the challenge, it is intended as the primary
-method of using the code in this project.
-
 Sample output on sample.txt
 ---------------------------
-Once the `run.sh java` script has finished with `./gradlew installApp`, you could
-manually skip using `run.sh` and use the programs directly as in the below
+Once the `run.sh java` script has finished with `./gradlew installApp`, you
+could manually skip using `run.sh` and use the programs directly as in the below
 demonstration:
 
-    $ project='InsightDataEngineeringCodingChallenge'
-    $ perl non-scalable_10min_oneliner2.pl sample.txt
-    5.0
-    4.5
-    4.0
-    4.5
-    $ ./build/install/$project/bin/runningMedianWordsPerLine -i sample.txt
-    5.0
-    4.5
-    4.0
-    4.5
-    $ ./src/main/perl/runningMedianWordsPerLine.pl sample.txt
-    5.0
-    4.5
-    4.0
-    4.5
-    $ perl non-scalable_10min_oneliner1.pl sample.txt
-    a              	1
-    big            	1
-    call           	1
-    every          	2
-    everyone       	1
-    get            	1
-    holler         	1
-    make           	2
-    meeting        	1
-    out            	2
-    shout          	2
-    so             	1
-    who            	2
-    $ ./build/install/$project/bin/wordCount -i sample.txt
-    a              	1
-    big            	1
-    call           	1
-    every          	2
-    everyone       	1
-    get            	1
-    holler         	1
-    make           	2
-    meeting        	1
-    out            	2
-    shout          	2
-    so             	1
-    who            	2
-    $ ./src/main/perl/wordCount.pl sample.txt
-    a              	1
-    big            	1
-    call           	1
-    every          	2
-    everyone       	1
-    get            	1
-    holler         	1
-    make           	2
-    meeting        	1
-    out            	2
-    shout          	2
-    so             	1
-    who            	2
-    $ ./build/install/$project/bin/wordCount -i sample.txt -s stop.txt
-    big            	1
-    call           	1
-    every          	2
-    everyone       	1
-    get            	1
-    holler         	1
-    make           	2
-    meeting        	1
-    out            	2
-    shout          	2
-    so             	1
-    who            	2
+    $
 
 Challenge Overview for the Unfamiliar
 --------------------------------------
 To learn what this challenge is about, please have a look at the
 [challenge as posed][challenge] with [its FAQ][faq] etc.
 
-Simply put, the goal is to count the words in some text files, and to calculate
-the median number of words per line in the same files. Using some definition
-for what is and is not a word that's specified in the FAQ. My short version is:
+### Synopsis ###
+The goal is to ingest tweet-like text and to
 
-- Assume the files are just `ASCII`, not `UTF-8` or other encodings
-- Split words on whitespace only.
-- Clean out hyphens, punctuation, and all other non-AlphaNumerics (I read this
-to not clean underscore).
-- Do not store or count any empty strings or words consisting entirely of
-digits (EG "10011")
+1. Tabulate the number of times each word has been tweeted across all tweets
+   seen.
+2. Maintain a median of the number of unique words per tweet, which is updated
+   and output with each new tweet.
 
-I was given a 5 day timeframe to try this challenge. I think the challenge was
-posed in batches, some starting 2-3 weeks earlier than me, but I assume everyone
-overall had the same timeframe of about 5 days to finish as I had.
-
-I do plan to continue updating this project as noted in the `run.sh`.
-
-If you try out my code, in the output of words you will see results like these
-"words" formed from URLs or HTML when following these rules above:
-
-    httpsgithubcomdlamblininsightdataengineeringcodechallenge
-    htmlheadtitle404
-
-That means everything is working normally; there will be many more normal
-words found across input files.
+For this certain assumptions and definitions are made:
+- The input tweets are just `ASCII`, specifically containing only lowercase
+  letters, numbers, and printable "characters like ':', '@', '#'."
+- Any whitespace separates words.
+- As tweets are 140 characters, a maximum of 70 unique words per tweet exists.
+Or 69, since 69 = 127 - 32 - 26, so there would be one non-uniqe "word" in a
+tweet of all single character words.
 
 ##### Thanks to: #####
 > Anne Bessman and David Drummond for answering questions and making the challenge  
