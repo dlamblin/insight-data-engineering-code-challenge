@@ -3,6 +3,8 @@
 backup_input/
 wc_input/*txt
 wc_output/*txt
+tweet_input/*.txt
+tweet_output/*.txt
 
 # Generally applicable to any project #
 #######################################

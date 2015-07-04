@@ -7,9 +7,11 @@ Once, current, and future state
 - Working head of the master branch: [the version you're reading now]
 contains progress towards solving the
 [challenge as updated on 2015-07-02](#challenge-july). Once ready the submitted
-version will be tagged as v2.0. All commits after v1.1 are breaking changes with respect to the earlier solution.
+version will be tagged as v2.0. All commits after v1.1 are breaking changes with
+respect to the earlier solution.
 - v1.1: represents the solution to the challenge as posted on 2015-03-17,
-linked at the bottom of this file.
+linked at the bottom of this file. *Please checkout this tag as the latest
+working version*.
 - v1.0: The solution as submitted the 2015-03-17 challenge will be retroactively
 tagged as v1.0.
 
@@ -36,20 +38,25 @@ Changes
 
 ### From v1.1 towards v2.0 ###
 - This readme links to the appropriate commit of the challenge repository.
-- The shell script no longer offers to download sample text from the Guttenburg project.
-- The input and output directories and their contents were renamed and updated to match the revised challenge.
+- The shell script no longer offers to download sample text from the Guttenburg
+  project.
+- The input and output directories and their contents were renamed and updated
+  to match the revised challenge.
 - The following are speculated changes:
   - Total rewrites of the one-liner, Perl, and Go solutions.
   - Addition of a Python solution.
   - Large rewrite of the Java solution.
-    - Removed the input handling code for clarity and relying on the shell script to correctly pipe in files.
+    - Removed the input handling code for clarity and relying on the shell
+      script to correctly pipe in files.
     - Removed the word cleaner.
-    - Removed the queue (min-max heap) based running median in favor of the fixed histogram running median.
+    - Removed the queue (min-max heap) based running median in favor of the
+      fixed histogram running median.
     - Combined the output of two features into a single run.
 
 ### From v1.0 to v1.1 ###
 - A solution was added in the _Go_ language.
-  - The _Go_ solution does not support reading whole directories unless they are piped into `stdin`. It does support stopwords.
+  - The _Go_ solution does not support reading whole directories unless they are
+    piped into `stdin`. It does support stopwords.
 - The shell script was updated to run this solution.
 
 Shell script
