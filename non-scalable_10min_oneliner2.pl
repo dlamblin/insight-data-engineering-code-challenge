@@ -1,1 +1,0 @@
-use warnings; use strict; my @counts=(); while(<>){my $count=0; foreach (split){s/\W//g;s/^\d*$//;if(length){$count++}} push @counts, $count; my $size = @counts; @counts = sort @counts; printf"%.1f\n", ($size%2==0) ? ($counts[$size/2-1]+$counts[$size/2])/2 : $counts[$size/2]}
