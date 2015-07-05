@@ -47,7 +47,7 @@ main() {
 
     local perl_tweetstat_cmd="./src/main/perl/wordCount.pl"
 
-    local line_tweetstat_cmd="./non-scalable_10min_oneliner1.pl"
+    local line_tweetstat_cmd="./src/perl/non-scalable_10min_oneliner.pl"
 
     local go_tweetstat_cmd="go run ./src/golang/wordcount/wordcount.go"
 
@@ -76,21 +76,20 @@ main() {
             ${java_tweetstat_cmd} -i "${dir_in}" -o "${dir_out}/wc_result.txt"
             ;;
         oneliner)
-          echo "While updating from v1.1 to v2.0 the Perl oneline solution has broken." >&2
-          exit
+            echo "The Perl one-liner outputs all results to STDOUT, ft2.txt then ff1.txt." >&2
             makedirs "${dir_in}" "${dir_out}"
-            echo "See also the slightly better \"perl\"; and this source in ./*.pl" >&2
+            echo "See also the slightly better \"perl\"; and this source in ./src/perl/*.pl" >&2
             local perl_cmd=$(which perl)
             if [[ $? -ne 0 ]]; then
                 echo "Actually, it seems you might not have perl installed." >&2
             else
                 echo "Running tweet stats for word count and running median." >&2
-                ${perl_cmd} ${line_tweetstat_cmd} "${dir_in}"/* > "${dir_out}/wc_result.txt"
+                ${perl_cmd} ${line_tweetstat_cmd} "${dir_in}"/*
             fi
             ;;
         perl)
-          echo "While updating from v1.1 to v2.0 the Perl solution has broken." >&2
-          exit
+            echo "While updating from v1.1 to v2.0 the Perl solution has broken." >&2
+            exit
             makedirs "${dir_in}" "${dir_out}"
             echo "See also the \"oneliner\" perl; and this source in src/main/perl" >&2
             echo "Running tweet stats for word count and running median." >&2
@@ -101,8 +100,8 @@ main() {
             echo "Not yet implemented; aw. I had under a week and java is so verbose" >&2
             ;;
         go)
-          echo "While updating from v1.1 to v2.0 the Go solution has broken." >&2
-          exit
+            echo "While updating from v1.1 to v2.0 the Go solution has broken." >&2
+            exit
             makedirs "${dir_in}" "${dir_out}"
             echo "I assume you have go installed. You may need to set your GOPATH" >&2
             echo "Running tweet stats for word count and running median." >&2
