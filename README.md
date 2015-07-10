@@ -18,7 +18,7 @@ tagged as v1.0.
 Implemented versions overview
 -----------------------------
 
-- [_One-liners_](#one-liners)
+- [_One-liner_](#one-liner)
  (Refers to v1.1 - Broken)
 - [_Perl_](#perl)
  (Refers to v1.1 - Broken)
@@ -42,8 +42,9 @@ Changes
   project.
 - The input and output directories and their contents were renamed and updated
   to match the revised challenge.
+- Total rewrite of the Perl and oneliner solutions.
 - The following are speculated changes:
-  - Total rewrites of the one-liner, Perl, and Go solutions.
+  - Total rewrites of the Go solutions.
   - Addition of a Python solution.
   - Large rewrite of the Java solution.
     - Removed the input handling code for clarity and relying on the shell
@@ -69,36 +70,26 @@ Please do [read through the script][run]; it is also mostly in the
 [Google shell style][shellstyle]. As per the challenge, it is the primary
 method of using the solutions in this repository.
 
-One-liners
+One-liner
 ----------
-The one-liners [`non-scalable_10min_oneliner*.pl`][oneliner1] were the first
-code I  produced to answer the challenge, in oneliner form, not a lot of time
-was spent on them. They were updated after looking at the FAQ point on removing
-numbers, and now  match output from the _Java_ program.
-The [naive median approach][oneliner2]
-over all turns out to be slow, because it's using an array, and sorting it
+The Perl one-liner [`non-scalable_10min_oneliner.pl`][oneliner] was the first
+code I produced to answer the challenge, in one-liner form.
+The one-liner does not output to the files but rather to STDOUT. It's running
+median method is naive in that it sorts an array of all the unique counts seen
+for each tweet. This turns out to be slow, because the sorting is
 $O(n \log n)$ every time something is added, to give the median an $O(1)$
 look-up performance after the sort. This is a total of so $O(n \log n)$ for
-each line, growing with each line processed.
-
-I wanted to show a quick implementation and basic solution, with the full
-caveat that one-liners are not clean, well documented nor scalable.
+each tweet, growing with each tweet processed. It is a starting point for
+the other attempted solutions.
 
 Perl
 ----
-The _Perl_ version was a total rewrite, discarding the one-liner approach.
-It was quick and easy to make and I hope the comments keep it readable.
-This version's [running median command][PRM] mirrors the [`RangeRunningMedian`][RRM]
-frequency counting approach, making finding the median a $O(1)$ operation
-after a $O(n \log n)$ sort. It doesn't preallocate the size of the hash of
-frequencies, so no range need be specified.
-
-As noted in the source, I am certain that modules exist to bind the hash to
-an implementation that retains its keys in sorted order, and that there also
-exists a binding to disk backing. This would allowing the program to exit and
-then pick up with the running median from before exiting. I'm unsure how this
-would affect performance, but the sorted keys should speed up the overall
-process by reducing the work to sort keys after each insert.
+The _Perl_ version was a rewrite, discarding the one-liner approach.
+I hope the comments keep it readable.
+This [solution's][Pelr] running median uses an array where the index is the
+number of unique words in a given tweet, and the value is how many tweets had
+that number, making finding the median a $O(1)$ operation (best 0 worst 70).
+The assumed range of unique words per tweet is from 0 to 69.
 
 Python
 ------
@@ -251,15 +242,14 @@ tweet of all single character words.
 [challenge]: https://github.com/InsightDataScience/cc-example/tree/0d01fc8f703930ce522536230a3829d618f9fe99 "Insight Data Science Coding Challenge Example"
 [challenge-july]: https://github.com/InsightDataScience/cc-example/tree/1eb0b6e398c0ad069436e65f90dc6285c319acc1 "Insight Data Science Coding Challenge Example"
 [faq]: https://github.com/InsightDataScience/cc-example#faq "Challenge FAQ"
-[oneliner1]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/non-scalable_10min_oneliner1.pl
-[oneliner2]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/non-scalable_10min_oneliner2.pl
-[RRM]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/main/java/lamblin/medianwordsperline/RangeRunningMedian.java "RangeRunningMedian"
-[QRM]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/main/java/lamblin/medianwordsperline/QueueRunningMedian.java "QueueRunningMedian"
-[WC]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/main/java/lamblin/common/source/word/filter/WordCleaner.java "WordCleaner"
-[WA]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/main/java/lamblin/wordcount/WordAccumulator.java "WordAccumulator"
-[WCT]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/main/java/lamblin/medianwordsperline/WordCountTransformer.java "WordCountTransformer"
-[RMM]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/main/java/lamblin/medianwordsperline/RunningMedianModule.java "RunningMedianModule"
-[PRM]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/main/perl/runningMedianWordsPerLine.pll "Perl running median words per line"
+[oneliner]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/perl/non-scalable_10min_oneliner.pl
+[RRM]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/java/main/lamblin/medianwordsperline/RangeRunningMedian.java "RangeRunningMedian"
+[QRM]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/java/main/lamblin/medianwordsperline/QueueRunningMedian.java "QueueRunningMedian"
+[WC]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/java/main/lamblin/common/source/word/filter/WordCleaner.java "WordCleaner"
+[WA]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/java/main/lamblin/wordcount/WordAccumulator.java "WordAccumulator"
+[WCT]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/java/main/lamblin/medianwordsperline/WordCountTransformer.java "WordCountTransformer"
+[RMM]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/java/main/lamblin/medianwordsperline/RunningMedianModule.java "RunningMedianModule"
+[Perl]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/perl/tweetStats.pl "Perl running median unique words per line and word count"
 [dagger]: http://square.github.io/dagger/ "Dagger"
 [guava]: https://github.com/google/guava "com.google.common"
 [javastyle]: https://google-styleguide.googlecode.com/svn/trunk/javaguide.html "Google Java Style"
