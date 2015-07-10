@@ -19,11 +19,11 @@ Implemented versions overview
 -----------------------------
 
 - [_One-liner_](#one-liner)
- (Refers to v1.1 - Broken)
+ (Updated for v2)
 - [_Perl_](#perl)
- (Refers to v1.1 - Broken)
+ (Updated for v2)
 - [_Python_](#python)
- (Forthcoming)
+ (Implemented for v2)
 - [_Go_](#go)
  (Refers to v1.1 - Broken)
 - [_Java_](#java)
@@ -43,9 +43,9 @@ Changes
 - The input and output directories and their contents were renamed and updated
   to match the revised challenge.
 - Total rewrite of the Perl and oneliner solutions.
+- Addition of a Python solution.
 - The following are speculated changes:
   - Total rewrites of the Go solutions.
-  - Addition of a Python solution.
   - Large rewrite of the Java solution.
     - Removed the input handling code for clarity and relying on the shell
       script to correctly pipe in files.
@@ -63,8 +63,8 @@ Changes
 Shell script
 ------------
 The file, `run.sh`, has its own usage information, which shows when
-invoked with `h` or `help`. It can run either the _oneliner_, _Java_, or _Perl_
-version, and it can also clean the project.
+invoked with `h` or `help`. It can run either the _oneliner_, _Java_, _Perl_,
+_Python_, or _Go_ version, and it can also clean the Java project.
 
 Please do [read through the script][run]; it is also mostly in the
 [Google shell style][shellstyle]. As per the challenge, it is the primary
@@ -86,15 +86,21 @@ Perl
 ----
 The _Perl_ version was a rewrite, discarding the one-liner approach.
 I hope the comments keep it readable.
-This [solution's][Pelr] running median uses an array where the index is the
+This [solution's][Perl] running median uses an array where the index is the
 number of unique words in a given tweet, and the value is how many tweets had
 that number, making finding the median a $O(1)$ operation (best 0 worst 70).
 The assumed range of unique words per tweet is from 0 to 69.
 
 Python
 ------
-Forthcoming;
-The _Python_ version of the solution is in the same vein as the _Perl_ version.
+The _Python_ version of the solution takes advantage of the Python
+[`Counter`][counter] subclass of dict. For its running median, it also uses
+an array from 0 to 69 words per tweet as described above.
+In an attempt to make use of multiple cores if available, it passes tweets
+through a queue to worker processes which in turn hand off the two feature
+statistics via two queues to an accumulating `Counter` and to a running median
+calculator. As the order of tweets processed may vary, they are sequenced when
+read and then ordered by a buffered resequencer for the running median.
 
 Go
 --
@@ -250,6 +256,7 @@ tweet of all single character words.
 [WCT]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/java/main/lamblin/medianwordsperline/WordCountTransformer.java "WordCountTransformer"
 [RMM]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/java/main/lamblin/medianwordsperline/RunningMedianModule.java "RunningMedianModule"
 [Perl]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/perl/tweetStats.pl "Perl running median unique words per line and word count"
+[counter]: https://docs.python.org/3.4/library/collections.html#collections.Counter "A Counter is a dictionary where key counts are stored as the key values"
 [dagger]: http://square.github.io/dagger/ "Dagger"
 [guava]: https://github.com/google/guava "com.google.common"
 [javastyle]: https://google-styleguide.googlecode.com/svn/trunk/javaguide.html "Google Java Style"
