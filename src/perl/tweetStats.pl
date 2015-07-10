@@ -78,6 +78,6 @@ close($F2);
 
 # Now that we're done with tweets we'll output the whole set of words counted.
 foreach (sort keys %words) {
-  printf( $F1 "%-28s%d\n", $_, $words{$_});
+  printf( $F1 "%-27s %d\n", $_, $words{$_});
 }
 close($F1);
