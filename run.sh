@@ -43,9 +43,9 @@ main() {
     local gradle_cmd='./gradlew'
     local java_project_name='InsightDataEngineeringCodingChallenge'
     local java_bin_path="./build/install/${java_project_name}/bin"
-    local java_tweetstat_cmd="${java_bin_path}/tweetCount"
+    local java_tweetstat_cmd="${java_bin_path}/tweetStats"
 
-    local perl_tweetstat_cmd="./src/main/perl/wordCount.pl"
+    local perl_tweetstat_cmd="./src/perl/tweetStats.pl"
 
     local line_tweetstat_cmd="./src/perl/non-scalable_10min_oneliner.pl"
 
@@ -67,7 +67,7 @@ main() {
             echo "While updating from v1.1 to v2.0 the Java solution has broken." >&2
             exit
             makedirs "${dir_in}" "${dir_out}"
-            echo "Good choice; see all the source in src/{main,test}/java/lamblin" >&2
+            echo "Good choice; see all the source in src/java/{main,test}/lamblin" >&2
             if [[ ! -x ${java_tweetstat_cmd} ]]; then
                 echo "Installing: ${java_tweetstat_cmd}" >&2
                 ${gradle_cmd} installApp
@@ -76,8 +76,8 @@ main() {
             ${java_tweetstat_cmd} -i "${dir_in}" -o "${dir_out}/wc_result.txt"
             ;;
         oneliner)
-            echo "The Perl one-liner outputs all results to STDOUT, ft2.txt then ff1.txt." >&2
             makedirs "${dir_in}" "${dir_out}"
+            echo "The Perl one-liner outputs all results to STDOUT, ft2.txt then ff1.txt." >&2
             echo "See also the slightly better \"perl\"; and this source in ./src/perl/*.pl" >&2
             local perl_cmd=$(which perl)
             if [[ $? -ne 0 ]]; then
@@ -88,12 +88,10 @@ main() {
             fi
             ;;
         perl)
-            echo "While updating from v1.1 to v2.0 the Perl solution has broken." >&2
-            exit
             makedirs "${dir_in}" "${dir_out}"
-            echo "See also the \"oneliner\" perl; and this source in src/main/perl" >&2
+            echo "See also the \"oneliner\" perl; and this source in src/perl" >&2
             echo "Running tweet stats for word count and running median." >&2
-            ${perl_tweetstat_cmd} "${dir_in}"/* > "${dir_out}/wc_result.txt"
+            ${perl_tweetstat_cmd} "${dir_in}"/*
             ;;
         python)
             makedirs "${dir_in}" "${dir_out}"
