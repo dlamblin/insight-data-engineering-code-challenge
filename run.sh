@@ -49,6 +49,8 @@ main() {
 
     local line_tweetstat_cmd="./src/perl/non-scalable_10min_oneliner.pl"
 
+    local python_tweetstat_cmd="./src/python/tweetStats.py"
+
     local go_tweetstat_cmd="go run ./src/golang/wordcount/wordcount.go"
 
     #Start processing
@@ -95,7 +97,14 @@ main() {
             ;;
         python)
             makedirs "${dir_in}" "${dir_out}"
-            echo "Not yet implemented; aw. I had under a week and java is so verbose" >&2
+            echo "The Python solution uses multiple worker processes." >&2
+            local py_cmd=$(which python3)
+            if [[ $? -ne 0 ]]; then
+                echo "Actually, it seems you might not have python3 installed." >&2
+            else
+                echo "Running tweet stats for word count and running median." >&2
+                ${python_tweetstat_cmd} "${dir_in}"/*
+            fi
             ;;
         go)
             echo "While updating from v1.1 to v2.0 the Go solution has broken." >&2
