@@ -61,7 +61,7 @@ main() {
         -h)     usage ;;
     esac
 
-    echo "You chose ${command}: from java, oneliner, perl, python, go, " \
+    echo "You chose ${command}: from java, oneliner, perl, python, go," \
          "clean, or help." >&2
 
     case ${command} in
@@ -93,7 +93,7 @@ main() {
             makedirs "${dir_in}" "${dir_out}"
             echo "See also the \"oneliner\" perl; and this source in src/perl" >&2
             echo "Running tweet stats for word count and running median." >&2
-            ${perl_tweetstat_cmd} "${dir_in}"/*
+            ${perl_tweetstat_cmd} -o "${dir_out}" "${dir_in}"/*
             ;;
         python)
             makedirs "${dir_in}" "${dir_out}"
@@ -103,7 +103,7 @@ main() {
                 echo "Actually, it seems you might not have python3 installed." >&2
             else
                 echo "Running tweet stats for word count and running median." >&2
-                ${python_tweetstat_cmd} "${dir_in}"/*
+                ${python_tweetstat_cmd} -o "${dir_out}" "${dir_in}"/*
             fi
             ;;
         go)

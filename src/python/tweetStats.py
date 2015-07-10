@@ -11,14 +11,34 @@
 # - A sequence and count of unique words in the msg will be passed to:
 #     A buffered resequencer -> then a Running median calculator for ft2.
 
-import argparse
 from collections import Counter
-import fileinput
-from multiprocessing import Process, SimpleQueue, cpu_count, freeze_support
 import os
-import sys
 
-cores = 0
+def parse_args():
+    import argparse
+    import sys
+    parser = argparse.ArgumentParser(
+        description='''Count words in tweets.
+        Word counts are written to ft1.txt.
+        A running median of unique words per tweet is written to ft2.txt.''')
+    parser.add_argument('--outdir', '-o', default='tweet_output',
+        help='directory in which to write ft1.txt and ft2.txt.')
+    parser.add_argument('file', nargs='*',
+        help='files to read tweets from, or none for stdin')
+    args = parser.parse_args()
+
+    if os.path.exists(args.outdir):
+        if os.path.isdir(args.outdir):
+            return args
+        else:
+            print("The output directory {!r} isn't a directory.".format(
+                args.outdir))
+            sys.exit(-1)
+    else:
+        print("The output directory {!r} doesn't exist.".format(args.outdir))
+        sys.exit(-1)
+
+workers = 0
 # Check the input as conforming to the challenge specifications.
 def check(msg):
     if msg.isprintable() and msg.islower():
@@ -44,19 +64,19 @@ def worker(in_queue, unique_words_queue, word_count_queue):
 # Then writes the sorted counts to a file.
 def accumulator(in_queue, outdir):
     word_counts = Counter()
-    for workers in range(cores):
+    for worker in range(workers):
         for c in iter(in_queue.get, None):
             word_counts.update(c)
     with open(os.path.join(outdir, "ft1.txt"),"w") as file:
         for item in sorted(word_counts.items()):
-            file.write("{:<28} {}\n".format(*item))
+            file.write("{:<27} {}\n".format(*item))
 
 # Dequeues the counts of unique words per message in sequenced order and sends
 # the ordered sequence out.
 def buffered_resequener(in_queue, out_queue):
     buffer = {}
     expect = 0
-    for workers in range(cores):
+    for worker in range(workers):
         for seq, i in iter(in_queue.get, None):
             buffer[seq] = i
             while (expect in buffer):
@@ -85,7 +105,9 @@ def running_median(in_queue, outdir):
                 while (n < 70 and seen[n] == 0 ):
                     n += 1
                 m = (m + n) / 2
-            file.write("{}\n".format(m))
+            # The FAQ asks for two decimal places, yet all values
+            # will be n.00 or n.50, needing only one place.
+            file.write("{:.2f}\n".format(m))
 
 def sequencer(out_queue, seq=0):
     seq = [seq]
@@ -96,42 +118,23 @@ def sequencer(out_queue, seq=0):
     return s
 
 def ingest(files, out_queue):
+    import fileinput
     seq = sequencer(out_queue)
     with fileinput.input(files) as f:
         for line in f:
             seq(line.strip());
 
-def parse_args():
-    parser = argparse.ArgumentParser(
-        description='''Count words in tweets.
-        Word counts are written to ft1.txt.
-        A running median of unique words per tweet is written to ft2.txt.''')
-    parser.add_argument('--outdir', '-o', default='tweet_output',
-        help='directory in which to write ft1.txt and ft2.txt.')
-    parser.add_argument('file', nargs='*',
-        help='files to read tweets from, or none for stdin')
-    args = parser.parse_args()
-
-    if os.path.exists(args.outdir):
-        if os.path.isdir(args.outdir):
-            return args
-        else:
-            print("The output directory {!r} isn't a directory.".format(
-                args.outdir))
-            sys.exit(-1)
-    else:
-        print("The output directory {!r} doesn't exist.".format(args.outdir))
-        sys.exit(-1)
-
 def start(parsed_args):
-    processes          = []
-    msg_queue          = SimpleQueue()
-    word_count_queue   = SimpleQueue()
+    from multiprocessing import Process, SimpleQueue
+
+    processes = []
+    msg_queue = SimpleQueue()
+    word_count_queue = SimpleQueue()
     unique_words_queue = SimpleQueue()
-    median_queue       = SimpleQueue()
+    median_queue = SimpleQueue()
 
     # Prep workers to read from msg queue and write to other queues
-    for i in range(cores):
+    for i in range(workers):
         p = Process(target=worker,
                       args=(msg_queue, unique_words_queue, word_count_queue))
         processes.append(p)
@@ -158,8 +161,8 @@ def start(parsed_args):
     # Start reading msgs for the msg_queue
     ingest(parsed_args.file, msg_queue)
 
-    # Sending an indication to stop, one for each process
-    for i in range(cores):
+    # Sending an indication to stop, one for each worker
+    for i in range(workers):
         msg_queue.put(None)
 
     # This step gathers the child processes, but may be unneccessary
@@ -168,6 +171,7 @@ def start(parsed_args):
 
 
 if __name__ == '__main__':
+    from multiprocessing import cpu_count, freeze_support
     freeze_support()
-    cores = cpu_count()
+    workers = cpu_count()
     start(parse_args())
