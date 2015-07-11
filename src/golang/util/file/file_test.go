@@ -30,3 +30,20 @@ func TestOpenIfNot(t *testing.T) {
 		}
 	}
 }
+
+func TestCreateInDir(t *testing.T) {
+	// Setup some test cases with inputs and expected results.
+	// TODO(lamblin): not really thorough enough.
+	cases := []struct {
+		input1    string
+		input2    string
+		expectNil bool
+	}{
+		{"/tmp", "test"},
+	}
+
+	for _, c := range cases {
+		output := CreateInDir(&c.input1, c.input2)
+		defer output.Close()
+	}
+}

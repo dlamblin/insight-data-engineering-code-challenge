@@ -51,7 +51,7 @@ main() {
 
     local python_tweetstat_cmd="./src/python/tweetStats.py"
 
-    local go_tweetstat_cmd="go run ./src/golang/wordcount/wordcount.go"
+    local go_tweetstat_cmd="go run ./src/golang/tweetStats/tweetStats.go"
 
     #Start processing
     case ${command} in
@@ -107,12 +107,15 @@ main() {
             fi
             ;;
         go)
-            echo "While updating from v1.1 to v2.0 the Go solution has broken." >&2
-            exit
             makedirs "${dir_in}" "${dir_out}"
-            echo "I assume you have go installed. You may need to set your GOPATH" >&2
-            echo "Running tweet stats for word count and running median." >&2
-            cat "${dir_in}"/* | ${go_tweetstat_cmd} > "${dir_out}/wc_result.txt"
+            local go_cmd=$(which go)
+            if [[ $? -ne 0 ]]; then
+                echo "Actually, it seems you might not have go installed." >&2
+            else
+              echo "I assume you have go installed. You may need to set your GOPATH" >&2
+              echo "Running tweet stats for word count and running median." >&2
+              cat "${dir_in}"/* | ${go_tweetstat_cmd} -o "${dir_out}"
+            fi
             ;;
         clean)
             echo "Clean isn't a language, but I am going to" \
