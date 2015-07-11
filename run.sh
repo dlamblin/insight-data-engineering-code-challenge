@@ -35,7 +35,7 @@ makedirs() {
 main() {
     # Variables and configuration
     local usage_line="Usage: $0 {help|java|oneliner|perl|python|go|clean}\n"
-    local command="${1:-java}"
+    local command="${1:-python}"
 
     local dir_in='tweet_input'
     local dir_out='tweet_output'

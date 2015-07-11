@@ -21,7 +21,7 @@ func OpenIfNot(stringFlag *string, isNot string) *os.File {
 	return nil
 }
 
-// CreateInDir will create a file in a diretory given by a flag string.
+// CreateInDir will create a file in a directory given by a flag string.
 // returns the os.File pointer or exits or panics in case of issues.
 func CreateInDir(stringFlag *string, filename string) *os.File {
 	d, err := os.Stat(*stringFlag)
