@@ -1,4 +1,0 @@
-gradle
-a
-the
-an
