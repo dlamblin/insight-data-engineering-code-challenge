@@ -116,6 +116,7 @@ Java
 ----
 This paragraph dates from v1.0. There is no current _Java_ solution to the
 updated challenge. It's likely for v2.0 I should remove the input processing.
+
 While I originally thought to move on to writing this in a couple of languages,
 _Python_ and _Go_ sprang to mind, I wanted to commit to also adding in _Java_
 code. Knowing that _Java_ is verbose, and trying out three new libraries and
