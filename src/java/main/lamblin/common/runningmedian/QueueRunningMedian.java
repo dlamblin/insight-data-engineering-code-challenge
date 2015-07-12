@@ -6,9 +6,8 @@ import com.google.common.collect.MinMaxPriorityQueue;
  * Keeps track of the running median and returns it on each update of the inputs so far.
  * This implementation inserts the new input into one of two {@link MinMaxPriorityQueue}s.
  * Adding to these is O(log n) while viewing or removing the min or max is O(1).
- * This is not concurrent.
- * <p/>
- * Created by dlamblin on 3/22/15.
+ * <p>
+ * This is not concurrent.</p>
  *
  * @author Daniel Lamblin
  */
@@ -17,8 +16,14 @@ public class QueueRunningMedian<T extends Number & Comparable<T>> implements Run
   private final MinMaxPriorityQueue<T> smallHalf = MinMaxPriorityQueue.create();
   private final MinMaxPriorityQueue<T> largeHalf = MinMaxPriorityQueue.create();
 
+  /**
+   * Adds the input into the set of values seen so far and outputs the median of that set.
+   *
+   * @param input the input value added to the growing set of values
+   * @return the median of the set of values currently stored including the latest input
+   */
   @Override
-  public double update(T input) {
+  public Double update(T input) {
     store(input);
     return median();
   }
@@ -27,8 +32,8 @@ public class QueueRunningMedian<T extends Number & Comparable<T>> implements Run
    * While storing numbers we try to keep an equal number of elements in the small half and large
    * half of total elements and yet retain that all the small half elements are less than or equal
    * to all large half elements.
-   * <p/>
-   * This provides us with medians at the max of the small half and min of the large half.
+   * <p>
+   * This provides us with medians at the max of the small half and min of the large half.</p>
    *
    * @param value the value to store in the collection(s) against which we keep a running median
    */
@@ -110,7 +115,7 @@ public class QueueRunningMedian<T extends Number & Comparable<T>> implements Run
     if (smallHalfSize < largeHalfSize) {
       return largeHalf.peekFirst().doubleValue();
     } else {
-      // The small half has more elements, not equal elements due to previous if's return.
+      // The small half has more elements, not equal elements due to previous if statement's return.
       return smallHalf.peekLast().doubleValue();
     }
   }

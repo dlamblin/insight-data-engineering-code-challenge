@@ -19,7 +19,7 @@ public class EmptySourceTest {
   public final ExpectedException thrown = ExpectedException.none();
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     emptySource = new EmptySource();
   }
 

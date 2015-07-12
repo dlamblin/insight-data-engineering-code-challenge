@@ -4,20 +4,20 @@ import java.util.HashMap;
 
 /**
  * Updates a running median for all the data input with each update of added data.
- * <p/>
+ * <p>
  * If we know the range of possible integer inputs to update, as a tweet would never
  * never be more than 70 words, then we can, unlike the {@link QueueRunningMedian}, not store
  * each input, but rather the number of times each possible input in the range has been seen.
- * <p/>
+ * </p><p>
  * Combined with a total of how many inputs have been seen, we need only count half that total into
  * the sums from the beginning of the range onwards, identifying the mean in constant O(1) time.
  * It's also possible to store the data in constant O(1) time. Memory use remains bounded to the
  * size of range number of inputs.
- * <p/>
+ * </p><p>
  * Limitations are that the number of inputs total should be less than a long's maximum value and
  * similarly that the number of any one integer value inputs should be less as well. Also the number
  * of buckets should be less than integer's maximum value.
- * <p/>
+ * </p>
  * @author Daniel Lamblin
  */
  public class RangeRunningMedian<T extends Number & Comparable<T>> implements RunningMedian<T> {
@@ -32,6 +32,9 @@ import java.util.HashMap;
    * Will allocate a number of buckets, like a histogram, starting at {@code minimumIncluded},
    * increasing by {@code finestInterval} until {@code maximumIncluded}. All updates must have
    * input values which fall in these buckets.
+   * <p>
+   * This is not concurrent.
+   * </p>
    *
    * @param minimumIncluded the smallest value an update can be
    * @param maximumIncluded the largest value an update can be
@@ -59,7 +62,7 @@ import java.util.HashMap;
    * @return the median of all values added thus far
    */
   @Override
-  public double update(T input) {
+  public Double update(T input) {
     if (input.longValue() < minimumIncluded || input.longValue() > maximumIncluded) {
       throw new IllegalArgumentException(
           "The input falls outside the range given and construction time");

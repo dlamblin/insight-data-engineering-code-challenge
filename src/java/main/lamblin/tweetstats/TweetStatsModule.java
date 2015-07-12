@@ -34,7 +34,7 @@ import lamblin.common.runningmedian.RunningMedian;
 @dagger.Module(
     injects = TweetStatsCmd.class
 )
-class TweetStatsModule {
+public class TweetStatsModule {
 
   private final String[] args;
 
@@ -59,22 +59,22 @@ class TweetStatsModule {
     return arguments;
   }
 
-  @Provides
-  @Singleton
-  @Named("ft1.txt")
   /**
    * Provides the {@link java.io.PrintStream} to write to.
    */
+  @Provides
+  @Singleton
+  @Named("ft1.txt")
   PrintStream providePrintStreamFt1(Arguments arguments) {
     return providePrintStream(arguments.output, "ft1.txt");
   }
 
-  @Provides
-  @Singleton
-  @Named("ft2.txt")
   /**
    * Provides the {@link java.io.PrintStream} to write to.
    */
+  @Provides
+  @Singleton
+  @Named("ft2.txt")
   PrintStream providePrintStreamFt2(Arguments arguments) {
     return providePrintStream(arguments.output, "ft2.txt");
   }
@@ -135,8 +135,8 @@ class TweetStatsModule {
    * Provides a {@link RunningMedian} of unique word counts of each added line.
    */
   RunningMedian<Integer> provideQueueRunningMedian(Arguments arguments) {
-    return arguments.unconstrained ? new QueueRunningMedian<Integer>()
-                                   : new RangeRunningMedian<Integer>(0L, 70L, 1L);
+    return arguments.unconstrained ? new QueueRunningMedian<>()
+                                   : new RangeRunningMedian<>(0L, 70L, 1L);
   }
 
   @Provides

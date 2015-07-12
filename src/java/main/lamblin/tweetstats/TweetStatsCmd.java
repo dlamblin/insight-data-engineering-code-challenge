@@ -18,7 +18,7 @@ import lamblin.common.runningmedian.RunningMedian;
  *
  * @author Daniel Lamblin
  */
-class TweetStatsCmd {
+public class TweetStatsCmd {
 
   @Inject
   MessageWorkerPool messageWorkerPool;
@@ -38,6 +38,13 @@ class TweetStatsCmd {
   @Inject
   RunningMedian<Integer> runningMedian;
 
+  /**
+   * Sets up the Dagger injection module using the arguments which are parsed by JCommander.
+   * It then starts the worker pool, starts the runningMedian task, send messages to the pool, and
+   * outputs the total counts appropriately. Then it closes the two output print streams.
+   *
+   * @param args command line arguments to be parsed by {@link Arguments}
+   */
   public static void main(String[] args) {
     // Setup injection based on arguments
     ObjectGraph objectGraph = ObjectGraph.create(new TweetStatsModule(args));
@@ -49,10 +56,14 @@ class TweetStatsCmd {
     tweetStatsCmd.medianUniqueWordsOutput.close();
   }
 
+  /**
+   * Sends each line from the sources specified on the command line into the
+   * {@link MessageWorkerPool#addMessage(String)}. Then it outputs all the words and their counts in
+   * sorted order, closing the output {@link PrintStream}.
+   */
   private void countWords() {
-    int sequence = 0;
     for (String line : source) {
-      messageWorkerPool.addMessage(sequence++, line);
+      messageWorkerPool.addMessage(line);
     }
     for (String word : messageWorkerPool.getSortedWords()) {
       int count = messageWorkerPool.getCount(word);
@@ -62,6 +73,6 @@ class TweetStatsCmd {
   }
 
   private void startRunningMedian() {
-    messageWorkerPool.setupMedianUniqueWords(runningMedian, medianUniqueWordsOutput);
+    messageWorkerPool.startUniqueWordsRunningMedian(runningMedian, medianUniqueWordsOutput);
   }
 }

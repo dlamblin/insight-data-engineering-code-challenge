@@ -15,10 +15,14 @@ import java.util.Iterator;
  *
  * @author Daniel Lamblin
  */
-class DirectoryLineSource implements LineSource {
+public class DirectoryLineSource implements LineSource {
 
   private final Iterable<Path> paths;
 
+  /**
+   * Opens a directory and allows for the iteration over each line in each file within it.
+   * @param file the directory to open and read files from, non-recursively
+   */
   public DirectoryLineSource(File file) {
     Iterable<Path> pathStream;
     try {
@@ -33,6 +37,9 @@ class DirectoryLineSource implements LineSource {
     paths = pathStream;
   }
 
+  /**
+   * @return an iterator over the lines of each file in the directory
+   */
   @Override
   public Iterator<String> iterator() {
     return Iterables.concat(new FilesIterable()).iterator();
