@@ -73,7 +73,7 @@ main() {
             echo "Good choice; see all the source in src/java/{main,test}/lamblin" >&2
             if [[ ! -x ${java_tweetstat_cmd} ]]; then
                 echo "Installing: ${java_tweetstat_cmd}" >&2
-                ${gradle_cmd} installApp
+                ${gradle_cmd} installDist
             fi
             echo "Running tweet stats for word count and running median." >&2
             ${java_tweetstat_cmd} -i "${dir_in}" -o "${dir_out}/wc_result.txt"
