@@ -1,0 +1,69 @@
+package lamblin.common.source.line;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
+
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.Iterator;
+
+import lamblin.common.source.EmptySource;
+
+/**
+ * This implementation of a line source will provide lines from multiple specified files
+ * or directories. With none specified it will provide lines from the input stream.
+ *
+ * @author Daniel Lamblin
+ */
+public class NoneToManyLineSource implements LineSource {
+
+  private final Iterable<String> filesOrDirs;
+
+  /**
+   * Takes a iterable collection of strings assumed to point to named files or directories and
+   * provides and iterator over each of the lines within those files or directories' files.
+   * If the iterable strings is empty then the iterator will iterate over the lines in the input
+   * stream.
+   *
+   * @param filesOrDirs a collection of names of files or directories or an empty collection
+   */
+  public NoneToManyLineSource(Iterable<String> filesOrDirs) {
+    this.filesOrDirs = filesOrDirs;
+  }
+
+  @Override
+  public Iterator<String> iterator() {
+    if (filesOrDirs != null && filesOrDirs.iterator().hasNext()) {
+      return Iterables.concat(new FilesOrDirsLines()).iterator();
+    } else {
+      return new InputStreamLineSource().iterator();
+    }
+  }
+
+  /**
+   * Convert each string in the {@code filesOrDirs} into a line source that is one of:
+   * <ul>
+   * <li>A {@link FileLineSource} if the string points to a file.</li>
+   * <li>A {@link DirectoryLineSource} if the string points to a directory.</li>
+   * <li>An {@link EmptySource} if the string does not point to one of these.</li>
+   * </ul>
+   */
+  private class FilesOrDirsLines implements Iterable<LineSource> {
+
+    @Override
+    public Iterator<LineSource> iterator() {
+      return Iterables.transform(
+          filesOrDirs,
+          new Function<String, LineSource>() {
+            @Override
+            public LineSource apply(String input) {
+              final File file = Paths.get(input).toFile();
+              return file.isFile() ? new FileLineSource(file)
+                                   : file.isDirectory() ? new DirectoryLineSource(file)
+                                                        : new EmptySource();
+            }
+          }
+      ).iterator();
+    }
+  }
+}

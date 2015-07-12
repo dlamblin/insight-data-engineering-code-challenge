@@ -5,51 +5,39 @@ import com.google.common.collect.Iterables;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Iterator;
 
-import javax.sound.sampled.Line;
-
 import lamblin.common.source.EmptySource;
-import lamblin.common.source.word.FileWordSource;
-import lamblin.common.source.word.WordSource;
 
 /**
  * Reads lines out of each file in a directory. Does not recurse directories.
- *
- * TODO(lamblin): some kind of generified version between this and {@link @DirectoryWordSource}.
- * Created by dlamblin on 3/22/15.
  *
  * @author Daniel Lamblin
  */
 public class DirectoryLineSource implements LineSource {
 
-  private final File file;
-  private final DirectoryStream<Path> directoryStream;
+  private final Iterable<Path> paths;
 
   public DirectoryLineSource(File file) {
-    this.file = file;
-    DirectoryStream<Path> dirStream;
+    Iterable<Path> pathStream;
     try {
-      dirStream = Files.newDirectoryStream(file.toPath());
+      pathStream = Files.newDirectoryStream(file.toPath());
     } catch (IOException e) {
       System.err.println("Directory \"" + file.getName() + "\" could not be opened.");
       e.printStackTrace();
-      dirStream = null;
+      // To avoid giving the Iterables.transform a null fromIterable we use a Path which is itself
+      // an Iterable<Path>. Importantly "." is a directory and never a file at line 54.
+      pathStream = Paths.get(".");
     }
-    directoryStream = dirStream;
+    paths = pathStream;
   }
 
   @Override
   public Iterator<String> iterator() {
-    final Iterable<String> directoryLineSource = Iterables.concat(new FilesIterable());
-    Iterator<String> lineIterator = directoryLineSource.iterator();
-    if (!lineIterator.hasNext()) {
-      System.err.println("Directory \"" + file.getName() + "\" contains no files.");
-    }
-    return lineIterator;
+    return Iterables.concat(new FilesIterable()).iterator();
   }
 
   private class FilesIterable implements Iterable<LineSource> {
@@ -57,7 +45,7 @@ public class DirectoryLineSource implements LineSource {
     @Override
     public Iterator<LineSource> iterator() {
       return Iterables.transform(
-          directoryStream,
+          paths,
           new Function<Path, LineSource>() {
             @Override
             public LineSource apply(Path input) {
