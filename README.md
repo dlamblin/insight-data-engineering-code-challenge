@@ -1,7 +1,7 @@
 Insight Data Engineering Coding Challenge
 =========================================
 
-Once, current, and future state
+Once, current, [and future?] state
 -------------------------------
 
 - Working head of the master branch: [the version you're reading now]
@@ -127,13 +127,13 @@ command line, preceded by `-i` for priority. If any of these files are
 directories their direct contents are also processed as input.
 
 Achieved using [JCommander][JCommander], the argument parsing also supports `-u`
-flag which with [Dagger][dagger] will swap out the implementation of the running
-median from one that uses a histogram approach as described in the other
-solutions, or a dual-min-max heap approach where the ordered halves of inputs
+flag which, via [Dagger][dagger], will swap out the implementation of the running
+median from the histogram approach as described in the other solutions, to a
+dual-min-max heap approach, where the ordered halves of inputs
 are stored in equal sized heaps. Getting the max of the lesser heap and/or the
 min of the greater heap allows for quickly outputting the current median.
-Multiple parts of this were achieved with either [Guava][guava], or with Java's
-[util.concurrent][concurrent] implementations.
+Multiple parts of the solution were achieved with either [Guava][guava], or with
+Java's [util.concurrent][concurrent] implementations.
 
 [Gradle][gradle] was updated to v2.5, but the scope of custom tasks was greatly
 reduced. I hope it doesn't seem over-engineered. There is some
@@ -178,14 +178,14 @@ Or 69, since 69 = 127 - 32 - 26, so there would be one non-unique "word" in a
 tweet of all single character words.
 
 ##### Thanks to: #####
-> David Drummond for answering questions and making the challenge  
+> [David Drummond][ddrum] for answering questions and making the challenge  
 > the [Guava][guava] maintainers for such a breadth of performant time-savers  
 > the [Dagger][dagger] maintainers for making DI less error-prone  
-> the JCommander maintainers for a flexible argument parser  
-> the Gradle maintainers for their fine minimally-full-featured build-package-deploy tool-set  
-> JetBrains Community Edition contributors for the slickest IDE this side of a text editor  
-> Perl 5 maintainers for keeping the tool, that can do these tasks in 1 to 40 lines, fast as ever  
-> Git and GitHub for complementing each other and focusing on what you each do best  
+> the [JCommander][JCommander] maintainers for a flexible argument parser  
+> the [Gradle][gradle] maintainers for their fine minimally-full-featured build-package-deploy tool-set  
+> [JetBrains IDEA Community Edition][IDEA] contributors for the slickest IDE this side of a text editor  
+> [Perl 5][perl] maintainers for keeping the tool, that can do these tasks in 1 to 40 lines, fast as ever  
+> [Git][git] and [GitHub][github] for complementing each other and focusing on what you each do best  
 
 ###### - Daniel Lamblin ######
 
@@ -205,3 +205,8 @@ tweet of all single character words.
 [run]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/run.sh "run.sh"
 [shellstyle]: https://google-styleguide.googlecode.com/svn/trunk/shell.xml "Google shell style guide"
 [javadoc]: http://dlamblin.github.io/insight-data-engineering-code-challenge/javadoc/index.html "JavaDoc"
+[ddrum]: https://github.com/ddrum001 "David E Drummond on GitHub"
+[IDEA]: https://www.jetbrains.com/idea/features/editions_comparison_matrix.html "Compare IDEA CE and Ultimate"
+[perl]: https://www.perl.org/about.html "Six made Five better"
+[git]: http://git-scm.com/book/en/v2/Getting-Started-Git-Basics "Mercurial is also worth considering..."
+[github]: https://github.com "You are here, unless... well you checked out this repo."
