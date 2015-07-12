@@ -1,4 +1,4 @@
-package lamblin.common.source.line;
+package lamblin.common.source;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
@@ -10,14 +10,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
 
-import lamblin.common.source.EmptySource;
-
 /**
  * Reads lines out of each file in a directory. Does not recurse directories.
  *
  * @author Daniel Lamblin
  */
-public class DirectoryLineSource implements LineSource {
+class DirectoryLineSource implements LineSource {
 
   private final Iterable<Path> paths;
 

@@ -1,4 +1,4 @@
-package lamblin.common.source.word;
+package lamblin.common.source;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,7 +16,7 @@ public class EmptySourceTest {
   private EmptySource emptySource;
 
   @Rule
-  public ExpectedException thrown = ExpectedException.none();
+  public final ExpectedException thrown = ExpectedException.none();
 
   @Before
   public void setUp() throws Exception {

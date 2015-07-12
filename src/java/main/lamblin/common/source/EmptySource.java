@@ -3,17 +3,14 @@ package lamblin.common.source;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import lamblin.common.source.line.LineSource;
-import lamblin.common.source.word.WordSource;
-
 /**
- * A representation of an empty input stream for both a {@link WordSource} or {@link LineSource}.
+ * A representation of an empty input stream for {@link LineSource}.
  *
  * Created by dlamblin on 3/21/15.
  *
  * @author Daniel Lamblin
  */
-public class EmptySource implements WordSource, LineSource {
+public class EmptySource implements LineSource {
 
   @Override
   public Iterator<String> iterator() {

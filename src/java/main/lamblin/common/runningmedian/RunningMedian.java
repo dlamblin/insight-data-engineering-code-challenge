@@ -1,9 +1,7 @@
-package lamblin.medianwordsperline;
+package lamblin.common.runningmedian;
 
 /**
  * Accepts entries to calculate the median over, and returns that median.
- *
- * Created by dlamblin on 3/22/15.
  *
  * @author Daniel Lamblin
  */

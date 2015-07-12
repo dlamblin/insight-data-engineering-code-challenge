@@ -5,10 +5,9 @@ Once, current, and future state
 -------------------------------
 
 - Working head of the master branch: [the version you're reading now]
-contains progress towards solving the
-[challenge as updated on 2015-07-02](#challenge-july). Once ready the submitted
-version will be tagged as v2.0. All commits after v1.1 are breaking changes with
-respect to the earlier solution.
+contains several solutions to the [challenge as updated on 2015-07-02](#challenge-july). The submitted version is tagged as v2.0. All
+commits back until v1.1 are breaking changes with respect to the earlier
+solution.
 - v1.1: represents the solution to the challenge as posted on 2015-03-17,
 linked at the bottom of this file. *Please checkout this tag as the latest
 working version*.
@@ -19,40 +18,42 @@ Implemented versions overview
 -----------------------------
 
 - [_One-liner_](#one-liner)
- (Updated for v2)
+ (Updated for v2.0)
 - [_Perl_](#perl)
- (Updated for v2)
+ (Updated for v2.0)
 - [_Python_](#python)
- (Implemented for v2)
+ (Implemented for v2.0)
 - [_Go_](#go)
- (Updated for v2)
+ (Updated for v2.0)
 - [_Java_](#java)
- (Refers to v1.1 - Broken)
+ (Updated for v2.0)
 
-Refer to the
-[challenge overview ](#challenge-overview-for-the-unfamiliar)
-if necessary.
+Refer to the [challenge overview ](#challenge-overview-for-the-unfamiliar) if
+necessary.
 
 Changes
 -------
 
-### From v1.1 towards v2.0 ###
-- This readme links to the appropriate commit of the challenge repository.
-- The shell script no longer offers to download sample text from the Gutenberg
-  project.
-- The input and output directories and their contents were renamed and updated
-  to match the revised challenge.
+### From v1.1 to v2.0 ###
 - Total rewrite of the Perl and one-liner solutions.
 - Addition of a Python solution.
 - Large rewrite of the Go solution.
-- The following are speculated changes:
-  - Large rewrite of the Java solution.
-    - Removed the input handling code for clarity and relying on the shell
-      script to correctly pipe in files.
-    - Removed the word cleaner.
-    - Removed the queue (min-max heap) based running median in favor of the
-      fixed histogram running median.
-    - Combined the output of two features into a single run.
+  - Concurrent with goroutines and channels.
+  - Eliminated optional use of stopwords file.
+- Large rewrite of the Java solution.
+  - Combined the output of two features into a single run, sliming Gradle.
+  - Fixed histogram running median implementation.
+  - Removed the word input handling code for clarity.
+  - Removed the word cleaner.
+  - Eliminated optional use of stopwords file.
+  - Reduced the use of Dagger to just one module. (stuck with v1 over v2)
+  - Brought in a use of `AutoValue`.
+- Some reoganization of the `src` directory, particularly for Java.
+- The input and output directories and their contents were renamed and updated
+  to match the revised challenge.
+- This readme links to the appropriate commit of the challenge repository.
+- The shell script no longer offers to download sample text from the Gutenberg
+  project.
 
 ### From v1.0 to v1.1 ###
 - A solution was added in the _Go_ language.
@@ -114,15 +115,33 @@ single process.
 
 Java
 ----
-This paragraph dates from v1.0. There is no current _Java_ solution to the
-updated challenge. It's likely for v2.0 I should remove the input processing.
+The _Java_ solution is implemented similarly to the way the _Python_ and _Go_
+were implemented. One pool of worker processes takes messages concurrently, and
+then updates a wordcount "bag" while sending unique word counts into a queue,
+with their associated sequences. One thread in the worker pool is reading out of
+the queue and resequencing the result as a running median.
 
-While I originally thought to move on to writing this in a couple of languages,
-_Python_ and _Go_ sprang to mind, I wanted to commit to also adding in _Java_
-code. Knowing that _Java_ is verbose, and trying out three new libraries and
-tools, I was a bit new to: Gradle, Dagger, and JCommander, I spent all my
-available time on this language's version. I hope it doesn't seem
-over-engineered. There is some [JavaDoc][javadoc] for it.
+There's a little bit of added flexibility in the Java version where the user may
+either pipe in tweets as lines on stdin, or specify any number of files on the
+command line, preceded by `-i` for priority. If any of these files are
+directories their direct contents are also processed as input.
+
+Achieved using [JCommander][JCommander], the argument parsing also supports `-u`
+flag which with [Dagger][dagger] will swap out the implementation of the running
+median from one that uses a histogram approach as described in the other
+solutions, or a dual-min-max heap approach where the ordered halves of inputs
+are stored in equal sized heaps. Getting the max of the lesser heap and/or the
+min of the greater heap allows for quickly outputting the current median.
+Multiple parts of this were achieved with either [Guava][guava], or with Java's
+[util.concurrent][concurrent] implementations.
+
+[Gradle][gradle] was updated to v2.5, but the scope of custom tasks was greatly
+reduced. I hope it doesn't seem over-engineered. There is some
+[JavaDoc][javadoc] for the earlier edition, and the [Gradle wrapper][gradlew]
+can generate some javadoc for the current version too using the task by that
+name. Additionally it can generate IntelliJ IDEA 14 CE compatible projects files
+or if one were to add the eclipse plugin to build.gradle project files for that
+ide. See the `$./gradlew tasks` output.
 
 ### Other Notes ###
 The style of the _Java_ code tries to hew to the
@@ -176,8 +195,12 @@ tweet of all single character words.
 [oneliner]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/perl/non-scalable_10min_oneliner.pl
 [Perl]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/src/perl/tweetStats.pl "Perl running median unique words per line and word count"
 [counter]: https://docs.python.org/3.4/library/collections.html#collections.Counter "A Counter is a dictionary where key counts are stored as the key values"
+[JCommander]: http://jcommander.org "JCommander - Because life is too short to parse command line parameters"
 [dagger]: http://square.github.io/dagger/ "Dagger"
 [guava]: https://github.com/google/guava "com.google.common"
+[concurrent]: http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/package-summary.html "java.util.concurrent"
+[gradle]: http://gradle.org/getting-started-gradle-java/ "Opensource build automation"
+[gradlew]: https://spring.io/guides/gs/gradle/#_build_your_project_with_gradle_wrapper "The preferred way of starting a Gradle build"
 [javastyle]: https://google-styleguide.googlecode.com/svn/trunk/javaguide.html "Google Java Style"
 [run]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/run.sh "run.sh"
 [shellstyle]: https://google-styleguide.googlecode.com/svn/trunk/shell.xml "Google shell style guide"

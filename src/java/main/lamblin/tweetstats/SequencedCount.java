@@ -1,4 +1,4 @@
-package lamblin.wordcount;
+package lamblin.tweetstats;
 
 import com.google.auto.value.AutoValue;
 

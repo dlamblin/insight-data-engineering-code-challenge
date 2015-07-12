@@ -1,4 +1,4 @@
-package lamblin.common.source.line;
+package lamblin.common.source;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
@@ -6,8 +6,6 @@ import com.google.common.collect.Iterables;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.Iterator;
-
-import lamblin.common.source.EmptySource;
 
 /**
  * This implementation of a line source will provide lines from multiple specified files

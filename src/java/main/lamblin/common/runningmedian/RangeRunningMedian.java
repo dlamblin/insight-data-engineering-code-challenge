@@ -1,13 +1,12 @@
-package lamblin.medianwordsperline;
+package lamblin.common.runningmedian;
 
 import java.util.HashMap;
 
 /**
  * Updates a running median for all the data input with each update of added data.
  * <p/>
- * If we know the range of possible integer inputs to update, as we were told that there would
- * never
- * be more than 50 words per line, then we can, unlike the {@link QueueRunningMedian}, not store
+ * If we know the range of possible integer inputs to update, as a tweet would never
+ * never be more than 70 words, then we can, unlike the {@link QueueRunningMedian}, not store
  * each input, but rather the number of times each possible input in the range has been seen.
  * <p/>
  * Combined with a total of how many inputs have been seen, we need only count half that total into
@@ -19,13 +18,11 @@ import java.util.HashMap;
  * similarly that the number of any one integer value inputs should be less as well. Also the number
  * of buckets should be less than integer's maximum value.
  * <p/>
- * Created by dlamblin on 3/23/15.
- *
  * @author Daniel Lamblin
  */
  public class RangeRunningMedian<T extends Number & Comparable<T>> implements RunningMedian<T> {
 
-  private final HashMap<T, Long> inputCounts;
+  private final HashMap<Long, Long> inputCounts;
   private final Long minimumIncluded;
   private final Long maximumIncluded;
   private final Long finestInterval;
@@ -41,10 +38,10 @@ import java.util.HashMap;
    * @param finestInterval the distribution of values between these; recommend integer like 1.
    */
   public RangeRunningMedian(Long minimumIncluded, Long maximumIncluded, Long finestInterval) {
-    this.size = 0;
     this.minimumIncluded = minimumIncluded;
     this.maximumIncluded = maximumIncluded;
     this.finestInterval = finestInterval;
+    this.size = 0;
     Long longSize = ((maximumIncluded - minimumIncluded) / finestInterval) + 1;
     if (longSize > Integer.MAX_VALUE) {
       // This probably won't fit in a HashMap, but we'll try.
@@ -52,8 +49,7 @@ import java.util.HashMap;
           "Error: Range from %d to %d by %d is too big for the max number of buckets\n",
           minimumIncluded, maximumIncluded, finestInterval);
     }
-    int size = longSize.intValue();
-    inputCounts = new HashMap<>(size);
+    inputCounts = new HashMap<>(longSize.intValue());
   }
 
   /**
@@ -68,7 +64,7 @@ import java.util.HashMap;
       throw new IllegalArgumentException(
           "The input falls outside the range given and construction time");
     }
-    inputCounts.put(input, inputCounts.getOrDefault(input, 0L) + 1L);
+    inputCounts.put(input.longValue(), inputCounts.getOrDefault(input.longValue(), 0L) + 1L);
     size++;
     return median();
   }
@@ -81,11 +77,10 @@ import java.util.HashMap;
    */
   private double median() {
     long count = 0;
-    Long currentNumber = minimumIncluded;
-    while (currentNumber.compareTo(maximumIncluded) <= 0
-           && 2 * count < size) {
+    long currentNumber = minimumIncluded;
+    while (currentNumber <= maximumIncluded && 2 * count < size) {
       count += inputCounts.getOrDefault(currentNumber, 0L);
-      currentNumber = currentNumber + finestInterval;
+      currentNumber += finestInterval;
     }
     if (size % 2 != 0) {
       return currentNumber - finestInterval;
@@ -93,7 +88,12 @@ import java.util.HashMap;
       if (2 * count > size) {
         return currentNumber - finestInterval;
       } else {
-        return (currentNumber + currentNumber - finestInterval) / 2.0;
+        long lower = currentNumber - finestInterval;
+        while (!inputCounts.containsKey(currentNumber) && currentNumber <= maximumIncluded)
+        {
+          currentNumber += finestInterval;
+        }
+        return (lower + currentNumber) / 2.0;
       }
     }
   }

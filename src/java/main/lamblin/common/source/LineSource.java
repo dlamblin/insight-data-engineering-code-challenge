@@ -1,4 +1,4 @@
-package lamblin.common.source.line;
+package lamblin.common.source;
 
 /**
  * An Iterable source of lines.
