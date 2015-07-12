@@ -1,7 +1,4 @@
-package lamblin.common.source.word;
-
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Splitter;
+package lamblin.common.source;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,23 +7,18 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Reads words out of input {@link Reader}.
+ * Reads words out of input {@link java.io.Reader}.
  *
- * TODO(lamblin): There's likely utility in pulling up the Splitter
- *
- * Created by dlamblin on 3/21/15.
+ * Created by dlamblin on 3/22/15.
  *
  * @author Daniel Lamblin
-*/
-public class ReaderWordSource implements WordSource {
-
+ */
+class ReaderLineSource implements LineSource {
   private final BufferedReader input;
   private final String sourceDescription;
-  private static final Splitter splitter = Splitter.on(CharMatcher.BREAKING_WHITESPACE)
-      .trimResults().omitEmptyStrings();
 
-  public ReaderWordSource(Reader in, final String sourceDescription) {
-    this.sourceDescription = sourceDescription;
+  ReaderLineSource(Reader in, String description) {
+    sourceDescription = description;
     input = (in instanceof BufferedReader) ? (BufferedReader) in : new BufferedReader(in);
   }
 
@@ -37,7 +29,7 @@ public class ReaderWordSource implements WordSource {
 
   class iterator implements Iterator<String> {
 
-    private Iterator<String> words;
+    private String nextLine;
     private boolean closed = false;
 
     @Override
@@ -45,12 +37,10 @@ public class ReaderWordSource implements WordSource {
       if (closed) {
         return false;
       }
-      while (null == words || !words.hasNext()) {
+      while (null == nextLine) {
         try {
-          String nextLine = input.readLine();
-          if (null != nextLine) {
-            words = splitter.split(nextLine).iterator();
-          } else {
+          nextLine = input.readLine();
+          if (null == nextLine) {
             close();
             return false;
           }
@@ -64,7 +54,9 @@ public class ReaderWordSource implements WordSource {
     @Override
     public String next() {
       if (hasNext()) {
-        return words.next();
+        String result = nextLine;
+        nextLine = null;
+        return result;
       } else {
         throw new NoSuchElementException(
             sourceDescription + " has ended with no more words available.");

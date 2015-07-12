@@ -1,4 +1,4 @@
-package lamblin.common;
+package lamblin.tweetstats;
 
 import com.beust.jcommander.Parameter;
 
@@ -6,14 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Arguments to parse for {@link lamblin.wordcount.WordCountCmd}
- * or {@link lamblin.medianwordsperline.RunningMedianWordsPerLineCmd}.
- *
- * Created by dlamblin on 3/21/15.
+ * Arguments to parse for {@link TweetStatsCmd}.
  *
  * @author Daniel Lamblin
 */
-public class Arguments {
+class Arguments {
 
   @Parameter(
       names = {"-h", "--help"},
@@ -23,7 +20,7 @@ public class Arguments {
   @Parameter(
       names = {"-i", "--input"},
       description = "Input file or directory path")
-  public List<String> inputs = new ArrayList<>();
+  public final List<String> inputs = new ArrayList<>();
 
   @Parameter(
       names = {"-o", "--output"},
@@ -41,5 +38,5 @@ public class Arguments {
   public boolean unconstrained;
 
   @Parameter(description = "All remaining arguments are used as input files")
-  public List<String> remainingInputs = new ArrayList<>();
+  public final List<String> remainingInputs = new ArrayList<>();
 }

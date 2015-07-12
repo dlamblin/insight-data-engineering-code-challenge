@@ -1,4 +1,4 @@
-package lamblin.common.source.line;
+package lamblin.common.source;
 
 import java.io.CharArrayReader;
 import java.io.File;
@@ -13,7 +13,7 @@ import java.io.Reader;
  *
  * @author Daniel Lamblin
  */
-public class FileLineSource extends ReaderLineSource {
+class FileLineSource extends ReaderLineSource {
 
   public FileLineSource(File file) {
     super(getFileReader(file), "File: \"" + file.getName() + "\"");

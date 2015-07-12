@@ -1,4 +1,4 @@
-package lamblin.medianwordsperline;
+package lamblin.common.runningmedian;
 
 import com.google.common.collect.MinMaxPriorityQueue;
 
@@ -14,8 +14,8 @@ import com.google.common.collect.MinMaxPriorityQueue;
  */
 public class QueueRunningMedian<T extends Number & Comparable<T>> implements RunningMedian<T> {
 
-  private MinMaxPriorityQueue<T> smallHalf = MinMaxPriorityQueue.create();
-  private MinMaxPriorityQueue<T> largeHalf = MinMaxPriorityQueue.create();
+  private final MinMaxPriorityQueue<T> smallHalf = MinMaxPriorityQueue.create();
+  private final MinMaxPriorityQueue<T> largeHalf = MinMaxPriorityQueue.create();
 
   @Override
   public double update(T input) {

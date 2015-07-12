@@ -67,16 +67,15 @@ main() {
 
     case ${command} in
         java)
-            echo "While updating from v1.1 to v2.0 the Java solution has broken." >&2
-            exit
             makedirs "${dir_in}" "${dir_out}"
-            echo "Good choice; see all the source in src/java/{main,test}/lamblin" >&2
+            echo "See all the source in src/java/{main,test}/lamblin" >&2
             if [[ ! -x ${java_tweetstat_cmd} ]]; then
                 echo "Installing: ${java_tweetstat_cmd}" >&2
                 ${gradle_cmd} installDist
             fi
             echo "Running tweet stats for word count and running median." >&2
-            ${java_tweetstat_cmd} -i "${dir_in}" -o "${dir_out}/wc_result.txt"
+            echo " Also try '-u' in run.sh to swap median implementation." >&2
+            ${java_tweetstat_cmd} -o "${dir_out}" "${dir_in}"/*
             ;;
         oneliner)
             makedirs "${dir_in}" "${dir_out}"

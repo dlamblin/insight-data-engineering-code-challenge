@@ -3,7 +3,7 @@ apply plugin: 'application'
 apply plugin: 'idea'
 
 applicationName = 'InsightDataEngineeringCodingChallenge'
-mainClassName = 'lamblin.wordcount.WordCountCmd'
+mainClassName = 'lamblin.tweetstats.TweetStatsCmd'
 sourceCompatibility = 1.8
 version = '1.0'
 
@@ -15,7 +15,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     compile group: 'com.google.guava', name: 'guava', version: '18.0'
     compile group: 'com.google.auto.value', name: 'auto-value', version: '1.1'
-    compile 'com.beust:jcommander:1.29'
+    compile group: 'com.beust', name: 'jcommander', version: '1.30'
     compile 'com.squareup.dagger:dagger:1.2.2'
     compile 'com.squareup.dagger:dagger-compiler:1.2.2'
 }
@@ -48,5 +48,5 @@ sourceSets {
 
 // Initial start script's main class points to word count.
 startScripts {
-    applicationName = "wordCount"
+    applicationName = "tweetStats"
 }
