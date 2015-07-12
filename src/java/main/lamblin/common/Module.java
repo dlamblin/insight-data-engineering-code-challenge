@@ -20,7 +20,7 @@ import lamblin.common.source.word.WordSource;
 import lamblin.common.source.word.filter.WordCleaner;
 
 /**
- * Created by dlamblin on 3/22/15.
+ * A Dagger module configured by {@code String[]} arguments parsed by {@link JCommander}.
  *
  * @author Daniel Lamblin
  */
@@ -99,7 +99,7 @@ public class Module {
   @Provides
   @Singleton
   /**
-   * Provides the {@link lamblin.common.source.word.filter.WordCleaner} which also uses the stop-words.
+   * Provides the {@link WordCleaner} which also uses the stop-words.
    */
   WordCleaner provideWordCleaner(@Named("stop words") WordSource stopWordSource) {
     return new WordCleaner(stopWordSource);

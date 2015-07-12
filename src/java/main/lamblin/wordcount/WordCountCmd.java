@@ -1,39 +1,37 @@
 package lamblin.wordcount;
 
 import java.io.PrintStream;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import dagger.ObjectGraph;
 import lamblin.common.Module;
-import lamblin.common.source.word.filter.WordCleaner;
-import lamblin.common.source.word.WordSource;
+import lamblin.common.source.line.LineSource;
 
 /**
- * The Insight Data Engineering Coding Challenge issued 2015-03-17
+ * The Insight Data Engineering Coding Challenge issued 2015-07-02
  * The Java version.
  *
  * First part, counting words.
- *
- * Created by dlamblin on 3/21/15.
  *
  * @author Daniel Lamblin
  */
 public class WordCountCmd {
 
   @Inject
-  WordAccumulator wordAccumulator;
-
-  @Inject
-  WordCleaner wordCleaner;
+  MessageWordCounter messageWordCounter;
 
   @Inject
   @Named("input")
-  WordSource wordSource;
+  LineSource source;
 
   @Inject
   PrintStream output;
+
+  @Inject
+  ConcurrentLinkedQueue<SequencedCount> medianQueue;
 
   public static void main(String[] args) {
     // Setup injection based on arguments
@@ -45,13 +43,13 @@ public class WordCountCmd {
   }
 
   private void countWords() {
-    Iterable<String> cleanWords = wordCleaner.all(wordSource);
-    for (String word : cleanWords) {
-      wordAccumulator.add(word);
+    int sequence = 0;
+    for (String line : source) {
+      messageWordCounter.addMessage(sequence++, line);
     }
-    for (String word : wordAccumulator.getSortedWords()) {
-      int count = wordAccumulator.getCount(word);
-      output.printf("%-15s\t%d\n", word, count);
+    for (String word : messageWordCounter.getSortedWords()) {
+      int count = messageWordCounter.getCount(word);
+      output.printf("%-27s\t%d\n", word, count);
     }
     output.close();
   }

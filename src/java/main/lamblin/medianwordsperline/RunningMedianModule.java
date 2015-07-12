@@ -69,7 +69,7 @@ public class RunningMedianModule {
    */
   LineSource provideLineSource(Arguments arguments) {
     final String argName = "--input";
-    final String arg = arguments.input;
+    final String arg = arguments.inputs.isEmpty() ? "" : arguments.inputs.get(0);
     return getLineSourceForArgument(argName, arg, true);
   }
 

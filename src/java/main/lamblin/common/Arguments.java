@@ -2,6 +2,9 @@ package lamblin.common;
 
 import com.beust.jcommander.Parameter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Arguments to parse for {@link lamblin.wordcount.WordCountCmd}
  * or {@link lamblin.medianwordsperline.RunningMedianWordsPerLineCmd}.
@@ -20,7 +23,7 @@ public class Arguments {
   @Parameter(
       names = {"-i", "--input"},
       description = "Input file or directory path")
-  public String input;
+  public List<String> inputs = new ArrayList<>();
 
   @Parameter(
       names = {"-o", "--output"},
@@ -36,4 +39,7 @@ public class Arguments {
       names = {"-u", "--unconstrained"},
       description = "Swaps out the range limited median for the MinMax queue median method")
   public boolean unconstrained;
+
+  @Parameter(description = "All remaining arguments are used as input files")
+  public List<String> remainingInputs = new ArrayList<>();
 }
