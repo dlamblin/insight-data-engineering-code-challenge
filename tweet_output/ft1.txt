@@ -9,7 +9,7 @@ answer                      1
 astrazeneca                 1
 being                       1
 big                         2
-business.                   1 
+business.                   1
 businesses:                 1
 data                        1
 deployed                    1
