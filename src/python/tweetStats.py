@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 # I refer to tweets as messages, msg for short.
-# The general aproach here is to try and use multiple cores by distributing the
-# msgs to workers. It won't outperform for a small number of msgs < ~200.
+# The general approach here is to try and use multiple cores by distributing
+# the msgs to workers. It won't outperform for a small number of msgs < ~200.
 
 # The block diagram would look like:
 # Ingest msg -> Sequence msg -> Distribute msg to worker
