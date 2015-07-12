@@ -8,6 +8,8 @@
 # Daniel Lamblin
 
 
+usage_line="Usage: $0 {help|java|oneliner|perl|python|go|clean}\n"
+
 usage() {
     echo -e <<END
 \n${usage_line}
@@ -24,7 +26,7 @@ END
 }
 
 makedirs() {
-    for dir; do
+    for dir in $@; do
         if [[ ! -e "${dir}" ]]; then
             echo "Making directory ${dir}" >&2
             mkdir "${dir}"
@@ -34,7 +36,6 @@ makedirs() {
 
 main() {
     # Variables and configuration
-    local usage_line="Usage: $0 {help|java|oneliner|perl|python|go|clean}\n"
     local command="${1:-python}"
 
     local dir_in='tweet_input'

@@ -38,11 +38,11 @@ Changes
 
 ### From v1.1 towards v2.0 ###
 - This readme links to the appropriate commit of the challenge repository.
-- The shell script no longer offers to download sample text from the Guttenburg
+- The shell script no longer offers to download sample text from the Gutenberg
   project.
 - The input and output directories and their contents were renamed and updated
   to match the revised challenge.
-- Total rewrite of the Perl and oneliner solutions.
+- Total rewrite of the Perl and one-liner solutions.
 - Addition of a Python solution.
 - Large rewrite of the Go solution.
 - The following are speculated changes:
@@ -63,7 +63,7 @@ Changes
 Shell script
 ------------
 The file, `run.sh`, has its own usage information, which shows when
-invoked with `h` or `help`. It can run either the _oneliner_, _Java_, _Perl_,
+invoked with `h` or `help`. It can run either the _one-liner_, _Java_, _Perl_,
 _Python_, or _Go_ version, and it can also clean the Java project.
 
 Please do [read through the script][run]; it is also mostly in the
@@ -132,7 +132,7 @@ The arguments, input and output options are more flexible than the challenge
 specified, reading directories, files, or stdin, and writing to files or
 stdout. It may not seem like much compared to features built in _Perl_ and
 _Python_, but _Java_ is a little messy in this area, and even `nio` and `nio2`
-don't _truely_ help make file io code have a high degree of clarity.
+don't _truly_ help make file io code have a high degree of clarity.
 
 Sample output is the same as shown in the challenge repository's readme.
 
@@ -155,7 +155,7 @@ For this certain assumptions and definitions are made:
   letters, numbers, and printable "characters like ':', '@', '#'."
 - Any whitespace separates words.
 - As tweets are 140 characters, a maximum of 70 unique words per tweet exists.
-Or 69, since 69 = 127 - 32 - 26, so there would be one non-uniqe "word" in a
+Or 69, since 69 = 127 - 32 - 26, so there would be one non-unique "word" in a
 tweet of all single character words.
 
 ##### Thanks to: #####
@@ -163,7 +163,7 @@ tweet of all single character words.
 > the [Guava][guava] maintainers for such a breadth of performant time-savers  
 > the [Dagger][dagger] maintainers for making DI less error-prone  
 > the JCommander maintainers for a flexible argument parser  
-> the Gradle maintainers for their fine minimally-full-featured build-package-deploy toolset  
+> the Gradle maintainers for their fine minimally-full-featured build-package-deploy tool-set  
 > JetBrains Community Edition contributors for the slickest IDE this side of a text editor  
 > Perl 5 maintainers for keeping the tool, that can do these tasks in 1 to 40 lines, fast as ever  
 > Git and GitHub for complementing each other and focusing on what you each do best  

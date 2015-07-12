@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Better than the oneliner; this running median uses the histrogram approach to
+# Better than the oneliner; this running median uses the histogram approach to
 # tacking the set of the number of unique words per tweet seen so far. As tweets
 # are limited to 140 characters they can have at most 70 "words" on a line.
 # Given the limited character set however, only 69 unique words could fit in a
