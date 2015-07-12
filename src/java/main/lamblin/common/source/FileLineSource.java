@@ -7,14 +7,17 @@ import java.io.FileReader;
 import java.io.Reader;
 
 /**
- * Reads words out of a {@link File}.
- *
- * Created by dlamblin on 3/22/15.
+ * Reads lines out of a {@link File}.
  *
  * @author Daniel Lamblin
  */
-class FileLineSource extends ReaderLineSource {
+public class FileLineSource extends ReaderLineSource {
 
+  /**
+   * Opens a file reader or if the file is invalid, an empty char array as a line source.
+   *
+   * @param file the file to be opened
+   */
   public FileLineSource(File file) {
     super(getFileReader(file), "File: \"" + file.getName() + "\"");
   }

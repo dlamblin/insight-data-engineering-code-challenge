@@ -15,7 +15,7 @@ public class ReaderLineSourceTest {
   private Iterator<String> iterator;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     iterator = new ReaderLineSource(
         new StringReader("It's a string\nwith some\tTEXT."),
         "Test string").iterator();

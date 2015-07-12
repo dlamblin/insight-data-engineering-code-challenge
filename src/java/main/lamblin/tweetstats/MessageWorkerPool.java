@@ -21,12 +21,16 @@ import java.util.concurrent.TimeUnit;
 import lamblin.common.runningmedian.RunningMedian;
 
 /**
- * Accumulates counts of each word from messages added and total words added.
- * Also retains a sorted set of words.
+ * Each message added to this worker pool is run by a {@link Executors#newWorkStealingPool()}.
+ * The parent thread accumulates counts as totals of each word from messages added with
+ * {@link #addMessage(String)}. It also retains a sorted set of words for outputting words in order.
+ * Then the worker passes each message's count of unique words, via a {@link ConcurrentLinkedQueue}
+ * to the runnable worker {@link RunningMedianTask}, which is started by
+ * {@link #startUniqueWordsRunningMedian(RunningMedian, PrintStream)}.
  *
  * @author Daniel Lamblin
  */
-class MessageWorkerPool {
+public class MessageWorkerPool {
 
   private static final TimeUnit poolTimeoutUnits = TimeUnit.SECONDS;
   private static final long poolTimeout = 5;
@@ -37,6 +41,8 @@ class MessageWorkerPool {
   private final ConcurrentSkipListSet<String> sortedWords = new ConcurrentSkipListSet<>();
   private final ConcurrentLinkedQueue<SequencedCount> queue;
 
+  private int sequence = 0;
+
   public MessageWorkerPool(ConcurrentLinkedQueue<SequencedCount> queue) {
     this.queue = queue;
     pool = Executors.newWorkStealingPool();
@@ -46,35 +52,34 @@ class MessageWorkerPool {
    * Adds messages with words to be counted. You cannot add messages after calling either
    * {@link #getCounts} or {@link #getSortedWords}.
    *
-   * @param sequence the sequence of this message for the running median of unique words counted
    * @param message the message for which to increment its words' counts
    */
-  public void addMessage(int sequence, String message) {
-    pool.execute(new WordCounter(sequence, message));
+  public void addMessage(String message) {
+    pool.execute(new WordCounter(sequence++, message));
   }
 
   /**
-   * The total number of words added.
+   * The total number of unique words added.
    *
-   * @return the total number of all words
+   * @return the total number of unique words
    */
   public int getSize() {
     return words.size();
   }
 
   /**
-   * How many of these words were counted.
+   * How many of a given word were counted.
    *
-   * @param word the word counted
-   * @return the number of times it was added
+   * @param word being counted
+   * @return The number of times the word being counted was seen in all messages
    */
   public int getCount(String word) {
     return words.count(word);
   }
 
   /**
-   * The unordered entry set of words and their counts. Getting this will terminal the accumulator's
-   * thread pool and disable the {@link #addMessage} method.
+   * The unordered entry set of words and their counts. Getting this will terminate the
+   * accumulator's thread pool and disable the {@link #addMessage(String)} method.
    *
    * @return a set of words and their counts
    */
@@ -85,7 +90,7 @@ class MessageWorkerPool {
 
   /**
    * The ordered set of words counted. It does not include their counts. Getting this will terminate
-   * the accumulator's thread pool and disable the {@link #addMessage} method.
+   * the accumulator's thread pool and disable the {@link #addMessage(String)} method.
    *
    * @return a set of the words in natural order
    */
@@ -105,8 +110,16 @@ class MessageWorkerPool {
     }
   }
 
-  public void setupMedianUniqueWords(RunningMedian<Integer> runningMedian,
-                                     PrintStream medianUniqueWordsOutput) {
+  /**
+   * Sets one long-running {@link Runnable} to gather and resequence the counts of unique words out
+   * of the queue and output the current running median of these counts to a stream with receipt of
+   * each.
+   *
+   * @param runningMedian the running median implementation to use to update the median
+   * @param medianUniqueWordsOutput the {@link PrintStream} to output the running median to
+   */
+  public void startUniqueWordsRunningMedian(RunningMedian<Integer> runningMedian,
+                                            PrintStream medianUniqueWordsOutput) {
     pool.execute(new RunningMedianTask(runningMedian, medianUniqueWordsOutput));
   }
 
@@ -119,20 +132,32 @@ class MessageWorkerPool {
     private final int sequence;
     private final String message;
 
+    /**
+     * As each message comes in, it will be processed with it's sequence by this runnable, which
+     * may not complete the work quite in sequence, depending on the current state of the pool.
+     *
+     * @param sequence the monotonically increasing sequence int which may roll over
+     * @param message the message to be processed
+     */
     public WordCounter(int sequence, String message) {
       this.sequence = sequence;
       this.message = message;
     }
 
+    /**
+     * Splits the message on {@link CharMatcher#BREAKING_WHITESPACE} into words and both counts the
+     * totals across messages, and sends the unique number in this message, with the sequence, to
+     * the queue for the running median.
+     */
     @Override
     public void run() {
-      Set<String> uniques = Sets.newHashSet();
+      Set<String> unique = Sets.newHashSet();
       for (String word : splitter.split(message)) {
-        uniques.add(word);
+        unique.add(word);
         words.add(word);
         sortedWords.add(word);
       }
-      queue.add(SequencedCount.create(sequence, uniques.size()));
+      queue.add(SequencedCount.create(sequence, unique.size()));
     }
   }
 
@@ -144,30 +169,43 @@ class MessageWorkerPool {
     private final RunningMedian<Integer> runningMedian;
     private final PrintStream medianUniqueWordsOutput;
 
+    /**
+     * Will output a running median from the implementing class given to the {@link PrintStream}
+     * provided. It will buffer counts from the queue who came out of the expected sequence order.
+     *
+     * @param runningMedian the implementing class for tracking the running median of unique words
+     * @param medianUniqueWordsOutput the print stream to which the median will be written as each
+     *                                message comes in from the queue
+     */
     public RunningMedianTask(RunningMedian<Integer> runningMedian,
                              PrintStream medianUniqueWordsOutput) {
       this.runningMedian = runningMedian;
       this.medianUniqueWordsOutput = medianUniqueWordsOutput;
     }
 
+    /**
+     * Receives counts from sequenced messages and buffers those from an unexpected sequence number
+     * while outputting the running median for each expected sequence number.
+     */
     @Override
     public void run() {
       HashMap<Integer, Integer> buffer = new HashMap<>();
-      Integer expectedSequence = 0;
+      int expectedSequence = 0;
       boolean keepRunning = true;
       do {
         try {
           SequencedCount sc = queue.remove();
           buffer.put(sc.sequence(), sc.count());
           while (buffer.containsKey(expectedSequence)) {
-            stepRunningMedianWith(buffer.get(expectedSequence));
+            stepRunningMedianWith(buffer.remove(expectedSequence));
             expectedSequence++;
           }
         } catch (NoSuchElementException nse) {
+          // If the queue is empty we wait a 20th of a second to see if the pool is terminating.
           try {
-            keepRunning = !pool.awaitTermination(500L, TimeUnit.MILLISECONDS);
+            keepRunning = !pool.awaitTermination(50L, TimeUnit.MILLISECONDS);
           } catch (InterruptedException ie) {
-            // keep running
+            // If not, we'll keep running looking for more in the queue.
           }
         }
       } while (keepRunning);

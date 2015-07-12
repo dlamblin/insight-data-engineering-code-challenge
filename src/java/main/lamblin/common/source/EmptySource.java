@@ -6,12 +6,13 @@ import java.util.NoSuchElementException;
 /**
  * A representation of an empty input stream for {@link LineSource}.
  *
- * Created by dlamblin on 3/21/15.
- *
  * @author Daniel Lamblin
  */
 public class EmptySource implements LineSource {
 
+  /**
+   * @return an iterator where {@link innerIterator#hasNext()} is always {@code false}
+   */
   @Override
   public Iterator<String> iterator() {
     return new innerIterator();

@@ -19,8 +19,8 @@ public class NoneToManyLineSource implements LineSource {
 
   /**
    * Takes a iterable collection of strings assumed to point to named files or directories and
-   * provides and iterator over each of the lines within those files or directories' files.
-   * If the iterable strings is empty then the iterator will iterate over the lines in the input
+   * provides an iterator over each of the lines within those files and the directories' files.
+   * If the iterable of strings is empty then the iterator will iterate over the lines in the input
    * stream.
    *
    * @param filesOrDirs a collection of names of files or directories or an empty collection
@@ -29,6 +29,10 @@ public class NoneToManyLineSource implements LineSource {
     this.filesOrDirs = filesOrDirs;
   }
 
+  /**
+   * @return an iterator over the lines in each of the files specified or on directories specified.
+   *         If none are specified it opens stdin.
+   */
   @Override
   public Iterator<String> iterator() {
     if (filesOrDirs != null && filesOrDirs.iterator().hasNext()) {

@@ -165,7 +165,7 @@ def start(parsed_args):
     for i in range(workers):
         msg_queue.put(None)
 
-    # This step gathers the child processes, but may be unneccessary
+    # This step gathers the child processes, but may be unnecessary
     for p in processes:
         p.join()
 

@@ -9,7 +9,7 @@ import com.google.auto.value.AutoValue;
  * Thus they are identified with a sequence number for the running median to output correctly.
  */
 @AutoValue
-abstract class SequencedCount {
+public abstract class SequencedCount {
 
   static SequencedCount create(int sequence, int count) {
     return new AutoValue_SequencedCount(sequence, count);

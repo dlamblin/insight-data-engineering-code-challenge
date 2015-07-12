@@ -35,9 +35,8 @@ func TestCreateInDir(t *testing.T) {
 	// Setup some test cases with inputs and expected results.
 	// TODO(lamblin): not really thorough enough.
 	cases := []struct {
-		input1    string
-		input2    string
-		expectNil bool
+		input1 string
+		input2 string
 	}{
 		{"/tmp", "test"},
 	}
