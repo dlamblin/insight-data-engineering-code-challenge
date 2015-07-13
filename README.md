@@ -6,14 +6,19 @@ Status: v2.0
 ### Once, current, and future state ###
 
 - Working head of the master branch: [the version you're reading now]
-contains several solutions to the [challenge as updated on 2015-07-02](#challenge-july). The submitted version is tagged as v2.0. All
-commits back until v1.1 are breaking changes with respect to the earlier
-solution.
+  contains several solutions to the
+  [challenge as updated on 2015-07-02][challenge-july]
+  and some fixes to this readme.
+- v2.0.1: contains some documentation fixes and extra [JavaDoc][javadoc2]
+  on the [`gh-pages` branch][gh-pages].
+- v2.0: represents several sollutions to the [challenge][#challenge-july].
+  The submitted version was this tag v2.0. All commits back until v1.1 are
+  breaking changes with respect to the earlier solution.
 - v1.1: represents the solution to the challenge as posted on 2015-03-17,
-linked at the bottom of this file. *Please checkout this tag as the latest
-working version*.
+  linked at the bottom of this file. *Please checkout this tag as the latest
+  working version*.
 - v1.0: The solution as submitted the 2015-03-17 challenge will be retroactively
-tagged as v1.0.
+  tagged as v1.0.
 
 Implemented versions overview
 -----------------------------
@@ -210,8 +215,9 @@ tweet of all single character words.
 [javastyle]: https://google-styleguide.googlecode.com/svn/trunk/javaguide.html "Google Java Style"
 [run]: https://github.com/dlamblin/insight-data-engineering-code-challenge/blob/master/run.sh "run.sh"
 [shellstyle]: https://google-styleguide.googlecode.com/svn/trunk/shell.xml "Google shell style guide"
-[javadoc1]: http://dlamblin.github.io/insight-data-engineering-code-challenge/javadoc_v1.0/index.html "JavaDoc"
-[javadoc2]: http://dlamblin.github.io/insight-data-engineering-code-challenge/javadoc_v2.0/index.html "JavaDoc"
+[javadoc1]: http://dlamblin.github.io/insight-data-engineering-code-challenge/javadoc_v1.0/index.html "JavaDoc v1.0"
+[javadoc2]: http://dlamblin.github.io/insight-data-engineering-code-challenge/javadoc_v2.0/index.html "JavaDoc v2.0"
+[gh-pages]: http://dlamblin.github.io/insight-data-engineering-code-challenge/index.html "Quick github.io page about this"
 [ddrum]: https://github.com/ddrum001 "David E Drummond on GitHub"
 [IDEA]: https://www.jetbrains.com/idea/features/editions_comparison_matrix.html "Compare IDEA CE and Ultimate"
 [perl]: https://www.perl.org/about.html "Six made Five better"
