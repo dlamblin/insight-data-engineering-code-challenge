@@ -7,6 +7,19 @@ import java.util.List;
 
 /**
  * Arguments to parse for {@link TweetStatsCmd}.
+ * <pre>
+ * $ tweetStats -h
+ * Usage: &lt;main class&gt; [options] [input files]...
+ *   Options:
+ *      -h, --help
+ *         Print this usage
+ *      -i, --input
+ *         Input file or directory path[s]...
+ *      -o, --output
+ *         Output directory path
+ *      -u, --unconstrained
+ *         Swaps out the range limited median for the MinMax queue median method
+ * </pre>
  *
  * @author Daniel Lamblin
 */
@@ -17,8 +30,9 @@ public class Arguments {
    */
   @Parameter(
       names = {"-h", "--help"},
+      description = "Print this usage",
       help = true)
-  public boolean help;
+  public Boolean help;
 
   /**
    * The input flag is either "-i" or "--input" followed by an input file or directory path. This
@@ -26,8 +40,8 @@ public class Arguments {
    */
   @Parameter(
       names = {"-i", "--input"},
-      description = "Input file or directory path")
-  public final List<String> inputs = new ArrayList<>();
+      description = "Input file or directory path[s]...")
+  public List<String> inputs = null;
 
   /**
    * The output flag is either "-o" or "--output" followed by a directory path on. This
@@ -35,7 +49,7 @@ public class Arguments {
    */
   @Parameter(
       names = {"-o", "--output"},
-      description = "Output file path")
+      description = "Output directory path")
   public String output;
 
   /**
@@ -46,13 +60,16 @@ public class Arguments {
   @Parameter(
       names = {"-u", "--unconstrained"},
       description = "Swaps out the range limited median for the MinMax queue median method")
-  public boolean unconstrained;
+  public Boolean unconstrained;
 
   /**
    * Any remaining arguments not being a flag nor paired with one are gathered and processed as the
    * input flag would be, except after each of the input flags if any. If both input flags and these
    * remaining arguments are not specified, input is read from stdin.
    */
-  @Parameter(description = "All remaining arguments are used as input files")
-  public final List<String> remainingInputs = new ArrayList<>();
+  @Parameter(description = "[input files]...")
+  public List<String> remainingInputs = new ArrayList<>();
+
+  public Arguments() {
+  }
 }

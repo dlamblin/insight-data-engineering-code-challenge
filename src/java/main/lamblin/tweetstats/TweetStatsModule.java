@@ -52,6 +52,18 @@ public class TweetStatsModule {
   Arguments provideArguments() {
     Arguments arguments = new Arguments();
     JCommander cmd = new JCommander(arguments, args);
+    if (arguments.help == null) {
+      arguments.help = false;
+    }
+    if (arguments.unconstrained == null) {
+      arguments.unconstrained = false;
+    }
+    if (arguments.inputs == null) {
+      arguments.inputs = new ArrayList<>();
+    }
+    if (arguments.remainingInputs == null) {
+      arguments.remainingInputs = new ArrayList<>();
+    }
     if (arguments.help) {
       cmd.usage();
       System.exit(0);
