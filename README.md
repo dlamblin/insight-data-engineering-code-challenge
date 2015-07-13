@@ -9,16 +9,15 @@ Status: v2.0
   contains several solutions to the
   [challenge as updated on 2015-07-02][challenge-july]
   and some fixes to this readme.
-- v2.0.1: contains some documentation fixes and extra [JavaDoc][javadoc2]
+- [v2.0.1][v2.0.1]: contains some documentation fixes and extra [JavaDoc][javadoc2]
   on the [`gh-pages` branch][gh-pages].
-- v2.0: represents several sollutions to the [challenge][#challenge-july].
+- [v2.0][v2.0]: represents several sollutions to the [challenge][#challenge-july].
   The submitted version was this tag v2.0. All commits back until v1.1 are
   breaking changes with respect to the earlier solution.
-- v1.1: represents the solution to the challenge as posted on 2015-03-17,
-  linked at the bottom of this file. *Please checkout this tag as the latest
-  working version*.
-- v1.0: The solution as submitted the 2015-03-17 challenge will be retroactively
-  tagged as v1.0.
+- [v1.1][v1.1]: represents the solution to the challenge as posted on 2015-03-17,
+  linked at the bottom of this file.
+- [v1.0][v1.0]: The solution as submitted the 2015-03-17 challenge will be
+  retroactively tagged as v1.0.
 
 Implemented versions overview
 -----------------------------
@@ -39,6 +38,10 @@ necessary.
 
 Changes
 -------
+
+### From v2.0 to v2.0.1 ###
+ - Fixes to [JavaDoc][javadoc2] for clarity, and publishing
+   it on the [`gh-pages` branch][gh-pages].
 
 ### From v1.1 to v2.0 ###
 - Total rewrite of the Perl and one-liner solutions.
@@ -197,6 +200,10 @@ tweet of all single character words.
 
 ###### - Daniel Lamblin ######
 
+[v2.0.1]: https://github.com/dlamblin/insight-data-engineering-code-challenge/tree/v2.0.1 "at v2.0.1 Release"
+[v2.0]: https://github.com/dlamblin/insight-data-engineering-code-challenge/tree/v2.0 "at v2.0 Release"
+[v1.1]: https://github.com/dlamblin/insight-data-engineering-code-challenge/tree/v1.1 "at v1.1 Release"
+[v1.0]: https://github.com/dlamblin/insight-data-engineering-code-challenge/tree/v1.0 "at v1.0 Release"
 [challenge]: https://github.com/InsightDataScience/cc-example/tree/0d01fc8f703930ce522536230a3829d618f9fe99 "Insight Data Science Coding Challenge Example"
 [challenge-july]: https://github.com/InsightDataScience/cc-example/tree/1eb0b6e398c0ad069436e65f90dc6285c319acc1 "Insight Data Science Coding Challenge Example"
 [faq]: https://github.com/InsightDataScience/cc-example#faq "Challenge FAQ"
