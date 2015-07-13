@@ -105,9 +105,8 @@ def running_median(in_queue, outdir):
                 while (n < 70 and seen[n] == 0 ):
                     n += 1
                 m = (m + n) / 2
-            # The FAQ asks for two decimal places, yet all values
-            # will be n.00 or n.50, needing only one place.
-            file.write("{:.2f}\n".format(m))
+            # The FAQ asks for one decimal place; Earlier read it as 2!
+            file.write("{:.1f}\n".format(m))
 
 def sequencer(out_queue, seq=0):
     seq = [seq]

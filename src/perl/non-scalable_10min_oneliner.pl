@@ -1,1 +1,1 @@
-my(%W,@C)=((),());print"ft2.txt\n";while(<>){my%u=();foreach(split){if(length){$W{$_}++;$u{$_}++}}push@C,scalar keys%u;my$i=@C;@C=sort@C;printf"%.2f\n", ($i%2==0)?($C[$i/2-1]+$C[$i/2])/2:$C[$i/2]}print"\nft1.txt:\n";foreach my $w(sort keys(%W)){printf"%-27s %d\n",$w,$W{$w};}
+my(%W,@C)=((),());print"ft2.txt\n";while(<>){my%u=();foreach(split){if(length){$W{$_}++;$u{$_}++}}push@C,scalar keys%u;my$i=@C;@C=sort@C;printf"%.1f\n", ($i%2==0)?($C[$i/2-1]+$C[$i/2])/2:$C[$i/2]}print"\nft1.txt:\n";foreach my $w(sort keys(%W)){printf"%-27s %d\n",$w,$W{$w};}

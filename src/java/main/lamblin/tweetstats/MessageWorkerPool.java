@@ -213,7 +213,7 @@ public class MessageWorkerPool {
     }
 
     private void stepRunningMedianWith(Integer uniqueWords) {
-      medianUniqueWordsOutput.printf("%.2f\n", runningMedian.update(uniqueWords));
+      medianUniqueWordsOutput.printf("%.1f\n", runningMedian.update(uniqueWords));
     }
   }
 }

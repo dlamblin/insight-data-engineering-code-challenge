@@ -72,7 +72,7 @@ while (<>) {           # For every line of input from all args as files
       }
       $med = ( $med + $i ) / 2.0;
   }
-  printf( $F2 "%.2f\n", $med ); # The running medians go into ft2.txt
+  printf( $F2 "%.1f\n", $med ); # The running medians go into ft2.txt
 }
 close($F2);
 

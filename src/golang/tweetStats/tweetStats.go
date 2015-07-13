@@ -144,7 +144,7 @@ func runningMedian(median chan uniqueCount, ft2 *bufio.Writer, done chan bool) {
 }
 
 func outputMedian(histogram []int, totalLines int, ft2 *bufio.Writer) {
-	s := fmt.Sprintf("%0.2f\n", findMedianInHistogram(histogram, totalLines))
+	s := fmt.Sprintf("%0.1f\n", findMedianInHistogram(histogram, totalLines))
 	ft2.WriteString(s)
 }
 
