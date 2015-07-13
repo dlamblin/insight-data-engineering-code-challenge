@@ -1,8 +1,8 @@
 Insight Data Engineering Coding Challenge
 =========================================
 
-Status: v2.0
-------------
+Last release: v2.0.1
+--------------
 ### Once, current, and future state ###
 
 - Working head of the master branch: [the version you're reading now]
