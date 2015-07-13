@@ -51,12 +51,9 @@ public class DirectoryLineSource implements LineSource {
     public Iterator<LineSource> iterator() {
       return Iterables.transform(
           paths,
-          new Function<Path, LineSource>() {
-            @Override
-            public LineSource apply(Path input) {
-              final File file = input.toFile();
-              return file.isFile() ? new FileLineSource(file) : new EmptySource();
-            }
+          input -> {
+            final File file = input.toFile();
+            return file.isFile() ? new FileLineSource(file) : new EmptySource();
           }
       ).iterator();
     }

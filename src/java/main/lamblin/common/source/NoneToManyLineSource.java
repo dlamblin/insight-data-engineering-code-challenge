@@ -56,14 +56,11 @@ public class NoneToManyLineSource implements LineSource {
     public Iterator<LineSource> iterator() {
       return Iterables.transform(
           filesOrDirs,
-          new Function<String, LineSource>() {
-            @Override
-            public LineSource apply(String input) {
-              final File file = Paths.get(input).toFile();
-              return file.isFile() ? new FileLineSource(file)
-                                   : file.isDirectory() ? new DirectoryLineSource(file)
-                                                        : new EmptySource();
-            }
+          input -> {
+            final File file = Paths.get(input).toFile();
+            return file.isFile() ? new FileLineSource(file)
+                                 : file.isDirectory() ? new DirectoryLineSource(file)
+                                                      : new EmptySource();
           }
       ).iterator();
     }
