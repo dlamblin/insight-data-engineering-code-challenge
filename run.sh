@@ -11,15 +11,21 @@
 usage_line="Usage: $0 {help|java|oneliner|perl|python|go|clean}\n"
 
 usage() {
-    echo -e <<END
-\n${usage_line}
-\thelp\tprints this help.
-\tjava\truns word count and running median tweet statistics tool in java.
-\tperl\truns word count and running median tweet statistics tool in perl.
-\toneliner\truns word count and running median tweet stats a in perl oneliner.
-\tpython\truns word count and running median tweet statistics tool in python.
-\t      \t[python not-yet-implemented]
-\tgo\truns word count and running median tweet statistics tool in go.
+    echo what is going on?
+    cat <<END
+
+${usage_line}
+	help      prints this help.
+	java      runs word count and running median tweet statistics tool
+	          in java.
+	perl      runs word count and running median tweet statistics tool
+	          in perl.
+	oneliner  runs word count and running median tweet stats a in perl
+	          oneliner.
+	python    runs word count and running median tweet statistics tool
+	          in python.
+	go        runs word count and running median tweet statistics tool
+	          in go.
 
 END
     exit 0
