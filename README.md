@@ -168,7 +168,7 @@ Sample output is the same as shown in the challenge repository's readme.
 
 Rough Timing on `data-gen` tweets.txt
 -----------------------------------
-Running on a 1.2mb file of tweets from the challenge's new datas-gen directory I got the following; which I think showed there was some overhead to starting the jvm:
+Running on a 1.2mb file of tweets from the challenge's new `data-gen` directory I got the following; which I think showed there was some overhead to starting the jvm:
 
 <pre>
 ... (the onliner)
