@@ -166,6 +166,63 @@ don't _truly_ help make file I/O code have a high degree of clarity.
 
 Sample output is the same as shown in the challenge repository's readme.
 
+Rough Timing on `data-gen` tweets.txt
+-----------------------------------
+Running on a 1.2mb file of tweets from the challenge's new datas-gen directory I got the following; which I think showed there was some overhead to starting the jvm:
+
+<pre>
+... (the onliner)
+~                           3
+~30%                        11
+~~                          1
+
+real    0m5.755s
+user    0m3.964s
+sys     0m0.182s
+$ time ./run.sh perl
+You chose perl: from java, oneliner, perl, python, go, clean, or help.
+See also the "oneliner" perl; and this source in src/perl
+Running tweet stats for word count and running median.
+
+real    0m0 .295s
+user    0m0.260s
+sys     0m0.020s
+$ time ./run.sh python
+You chose python: from java, oneliner, perl, python, go, clean, or help.
+The Python solution uses multiple worker processes.
+Running tweet stats for word count and running median.
+
+real    0m2.354s
+user    0m3.448s
+sys     0m0.573s
+$ time ./run.sh go
+You chose go: from java, oneliner, perl, python, go, clean, or help.
+I assume you have go installed. You may need to set your GOPATH
+Running tweet stats for word count and running median.
+
+real    0m1.189s
+user    0m0.526s
+sys     0m0.363s
+$ time ./run.sh java
+You chose java: from java, oneliner, perl, python, go, clean, or help.
+See all the source in src/java/{main,test}/lamblin
+Running tweet stats for word count and running median.
+Also try '-u' in run.sh to swap median implementation.
+
+real    0m7.405s
+user    0m3.388s
+sys     0m0.638s
+$ time ./run.sh java
+You chose java: from java, oneliner, perl, python, go, clean, or help.
+See all the source in src/java/{main,test}/lamblin
+Running tweet stats for word count and running median.
+Also try '-u' in run.sh to swap median implementation.
+
+real    0m6.137s
+user    0m3.048s
+sys     0m0.430s
+</pre>
+
 Challenge Overview for the Unfamiliar
 --------------------------------------
 To learn what this challenge is about, please have a look at the
