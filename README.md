@@ -171,7 +171,8 @@ Rough Timing on `data-gen` tweets.txt
 Running on a 1.2mb file of tweets from the challenge's new `data-gen` directory I got the following; which I think showed there was some overhead to starting the jvm:
 
 <pre>
-... (the onliner)
+$ time ./run.sh oneliner
+... (the oneliner outputs to stdout)
 ~                           3
 ~30%                        11
 ~~                          1
@@ -184,7 +185,7 @@ You chose perl: from java, oneliner, perl, python, go, clean, or help.
 See also the "oneliner" perl; and this source in src/perl
 Running tweet stats for word count and running median.
 
-real    0m0 .295s
+real    0m0.295s
 user    0m0.260s
 sys     0m0.020s
 $ time ./run.sh python
