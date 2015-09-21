@@ -6,6 +6,25 @@ wc_output/*txt
 tweet_input/*.txt
 tweet_output/*.txt
 
+## General Key Safety ##
+########################
+*.pem
+*.ppk
+*_rsa
+*_dsa
+*_ecdsa
+*_ed25519
+
+## Possibly Applicable ##
+# built application files
+*.apk
+*.ap_
+# files for the dex VM
+*.dex
+
+# Local configuration file (sdk path, etc)
+local.properties
+
 # Generally applicable to any project #
 #######################################
 # << https://gist.github.com/octocat/9257657#file-gitignore
