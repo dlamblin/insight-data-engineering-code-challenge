@@ -8,12 +8,22 @@ tweet_output/*.txt
 
 ## General Key Safety ##
 ########################
+*.cer
+*.cert
+*.crt
+*.csr
+*.der
+*.key
+*.p12
+*.p7b
 *.pem
+*.pfx
+*.pkcs12
 *.ppk
-*_rsa
 *_dsa
 *_ecdsa
 *_ed25519
+*_rsa
 
 ## Possibly Applicable ##
 # built application files
